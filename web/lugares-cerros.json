@@ -1,0 +1,35 @@
+{
+  "zona": "cerros",
+  "nombre_zona": "Cerros",
+  "tamano_tesela": 512,
+  "nota": "Generado por scripts/26-pines-cerros.mjs desde config/cerros.json (D-34)",
+  "lugares": [
+    {
+      "id": "cerro-gordo",
+      "nombre": "Cerro Gordo (con el Cerro Banthi)",
+      "detalle": "Cumbre a 2 292 m (INEGI). Relieve real ×1. Nombre: POR CONFIRMAR (OSM).",
+      "zona": "cerros",
+      "u": 20174,
+      "v": -12060,
+      "tesela": "39_-24"
+    },
+    {
+      "id": "cerro-de-la-cruz",
+      "nombre": "Cerro de la Cruz (también Cerro de la Venta)",
+      "detalle": "Cumbre a 2 133 m (INEGI). Relieve real ×1. El pin va en la Cruz central. Nombre: CONFIRMADO (D-33).",
+      "zona": "cerros",
+      "u": -4732,
+      "v": 4805,
+      "tesela": "-9_9"
+    },
+    {
+      "id": "el-cerrito",
+      "nombre": "El Cerrito (Zona Arqueológica del Cerro y Barrio de la Cruz)",
+      "detalle": "Cumbre a 1 956 m (INEGI). Relieve real ×1. Nombre: CONFIRMADO (D-33).",
+      "zona": "cerros",
+      "u": 1730,
+      "v": 3200,
+      "tesela": "3_6"
+    }
+  ]
+}

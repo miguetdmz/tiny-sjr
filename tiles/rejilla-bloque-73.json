@@ -1,0 +1,215 @@
+{
+  "camara": {
+    "tipo": "ortografica-isometrica-fija",
+    "proyeccion": "dimétrica 2:1 (pixel art clásico): elevación 30°, cada pixel de ancho baja medio pixel",
+    "elevacion_grados": 30,
+    "azimut_grados": 225,
+    "azimut_nota": "La cámara mira desde el SUROESTE hacia el noreste. APROBADA el 16 nov 2026 (D-07). NO CAMBIAR.",
+    "metros_por_pixel": 0.25,
+    "nota": "FIJA. Si cambia, todas las teselas dejan de encajar."
+  },
+  "tamano_px": 512,
+  "metros_por_pixel": 0.25,
+  "metros_por_tesela_ancho": 128,
+  "altura_max_escena_m": 3,
+  "total_teselas_fase": 49,
+  "teselas": [
+    {
+      "i": 54,
+      "j": -3
+    },
+    {
+      "i": 55,
+      "j": -3
+    },
+    {
+      "i": 56,
+      "j": -3
+    },
+    {
+      "i": 53,
+      "j": -2
+    },
+    {
+      "i": 54,
+      "j": -2
+    },
+    {
+      "i": 55,
+      "j": -2
+    },
+    {
+      "i": 56,
+      "j": -2
+    },
+    {
+      "i": 57,
+      "j": -2
+    },
+    {
+      "i": 58,
+      "j": -2
+    },
+    {
+      "i": 51,
+      "j": -1
+    },
+    {
+      "i": 52,
+      "j": -1
+    },
+    {
+      "i": 53,
+      "j": -1
+    },
+    {
+      "i": 54,
+      "j": -1
+    },
+    {
+      "i": 55,
+      "j": -1
+    },
+    {
+      "i": 56,
+      "j": -1
+    },
+    {
+      "i": 57,
+      "j": -1
+    },
+    {
+      "i": 58,
+      "j": -1
+    },
+    {
+      "i": 59,
+      "j": -1
+    },
+    {
+      "i": 60,
+      "j": -1
+    },
+    {
+      "i": 50,
+      "j": 0
+    },
+    {
+      "i": 51,
+      "j": 0
+    },
+    {
+      "i": 52,
+      "j": 0
+    },
+    {
+      "i": 53,
+      "j": 0
+    },
+    {
+      "i": 54,
+      "j": 0
+    },
+    {
+      "i": 55,
+      "j": 0
+    },
+    {
+      "i": 56,
+      "j": 0
+    },
+    {
+      "i": 57,
+      "j": 0
+    },
+    {
+      "i": 58,
+      "j": 0
+    },
+    {
+      "i": 59,
+      "j": 0
+    },
+    {
+      "i": 60,
+      "j": 0
+    },
+    {
+      "i": 61,
+      "j": 0
+    },
+    {
+      "i": 51,
+      "j": 1
+    },
+    {
+      "i": 52,
+      "j": 1
+    },
+    {
+      "i": 53,
+      "j": 1
+    },
+    {
+      "i": 54,
+      "j": 1
+    },
+    {
+      "i": 55,
+      "j": 1
+    },
+    {
+      "i": 56,
+      "j": 1
+    },
+    {
+      "i": 57,
+      "j": 1
+    },
+    {
+      "i": 58,
+      "j": 1
+    },
+    {
+      "i": 59,
+      "j": 1
+    },
+    {
+      "i": 60,
+      "j": 1
+    },
+    {
+      "i": 53,
+      "j": 2
+    },
+    {
+      "i": 54,
+      "j": 2
+    },
+    {
+      "i": 55,
+      "j": 2
+    },
+    {
+      "i": 56,
+      "j": 2
+    },
+    {
+      "i": 57,
+      "j": 2
+    },
+    {
+      "i": 58,
+      "j": 2
+    },
+    {
+      "i": 55,
+      "j": 3
+    },
+    {
+      "i": 56,
+      "j": 3
+    }
+  ],
+  "zona": "bloque-73"
+}

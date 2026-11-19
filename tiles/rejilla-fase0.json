@@ -1,0 +1,95 @@
+{
+  "camara": {
+    "tipo": "ortografica-isometrica-fija",
+    "proyeccion": "dimétrica 2:1 (pixel art clásico): elevación 30°, cada pixel de ancho baja medio pixel",
+    "elevacion_grados": 30,
+    "azimut_grados": 225,
+    "azimut_nota": "La cámara mira desde el SUROESTE hacia el noreste. APROBADA el 16 nov 2026 (D-07). NO CAMBIAR.",
+    "metros_por_pixel": 0.25,
+    "nota": "FIJA. Si cambia, todas las teselas dejan de encajar."
+  },
+  "tamano_px": 512,
+  "metros_por_pixel": 0.25,
+  "metros_por_tesela_ancho": 128,
+  "altura_max_escena_m": 23,
+  "total_teselas_fase": 15,
+  "teselas": [
+    {
+      "i": -2,
+      "j": -1
+    },
+    {
+      "i": -1,
+      "j": -1
+    },
+    {
+      "i": 0,
+      "j": -1
+    },
+    {
+      "i": 1,
+      "j": -1
+    },
+    {
+      "i": 2,
+      "j": -1
+    },
+    {
+      "i": -2,
+      "j": 0
+    },
+    {
+      "i": -1,
+      "j": 0
+    },
+    {
+      "i": 0,
+      "j": 0
+    },
+    {
+      "i": 1,
+      "j": 0
+    },
+    {
+      "i": 2,
+      "j": 0
+    },
+    {
+      "i": -2,
+      "j": 1
+    },
+    {
+      "i": -1,
+      "j": 1
+    },
+    {
+      "i": 0,
+      "j": 1
+    },
+    {
+      "i": 1,
+      "j": 1
+    },
+    {
+      "i": 2,
+      "j": 1
+    }
+  ],
+  "zona": "fase0",
+  "plaza_caja_px": {
+    "u0": -221,
+    "u1": 233,
+    "v0": -139,
+    "v1": 93
+  },
+  "plaza_tamano_px": {
+    "ancho": 454,
+    "alto": 233
+  },
+  "teselas_de_la_plaza": [
+    {
+      "i": 0,
+      "j": 0
+    }
+  ]
+}

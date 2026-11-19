@@ -1,0 +1,11 @@
+{
+ "x0": -3510,
+ "n0": -5505,
+ "paso": 15,
+ "nx": 802,
+ "ny": 868,
+ "unidad": "decímetros, relativo a la Plaza",
+ "min_m": -10,
+ "max_m": 249.7,
+ "nota": "Suelo con relieve INEGI (CEM 3.0, 15 m) y cañada del río, igual que la escena. Generado por scripts/21-relieve-ciudad.mjs"
+}

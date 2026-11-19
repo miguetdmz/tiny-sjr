@@ -1,0 +1,211 @@
+{
+  "camara": {
+    "tipo": "ortografica-isometrica-fija",
+    "proyeccion": "dimétrica 2:1 (pixel art clásico): elevación 30°, cada pixel de ancho baja medio pixel",
+    "elevacion_grados": 30,
+    "azimut_grados": 225,
+    "azimut_nota": "La cámara mira desde el SUROESTE hacia el noreste. APROBADA el 16 nov 2026 (D-07). NO CAMBIAR.",
+    "metros_por_pixel": 0.25,
+    "nota": "FIJA. Si cambia, todas las teselas dejan de encajar."
+  },
+  "tamano_px": 512,
+  "metros_por_pixel": 0.25,
+  "metros_por_tesela_ancho": 128,
+  "altura_max_escena_m": 3,
+  "total_teselas_fase": 48,
+  "teselas": [
+    {
+      "i": 65,
+      "j": -8
+    },
+    {
+      "i": 66,
+      "j": -8
+    },
+    {
+      "i": 67,
+      "j": -8
+    },
+    {
+      "i": 68,
+      "j": -8
+    },
+    {
+      "i": 63,
+      "j": -7
+    },
+    {
+      "i": 64,
+      "j": -7
+    },
+    {
+      "i": 65,
+      "j": -7
+    },
+    {
+      "i": 66,
+      "j": -7
+    },
+    {
+      "i": 67,
+      "j": -7
+    },
+    {
+      "i": 68,
+      "j": -7
+    },
+    {
+      "i": 69,
+      "j": -7
+    },
+    {
+      "i": 70,
+      "j": -7
+    },
+    {
+      "i": 61,
+      "j": -6
+    },
+    {
+      "i": 62,
+      "j": -6
+    },
+    {
+      "i": 63,
+      "j": -6
+    },
+    {
+      "i": 64,
+      "j": -6
+    },
+    {
+      "i": 65,
+      "j": -6
+    },
+    {
+      "i": 66,
+      "j": -6
+    },
+    {
+      "i": 67,
+      "j": -6
+    },
+    {
+      "i": 68,
+      "j": -6
+    },
+    {
+      "i": 69,
+      "j": -6
+    },
+    {
+      "i": 70,
+      "j": -6
+    },
+    {
+      "i": 71,
+      "j": -6
+    },
+    {
+      "i": 72,
+      "j": -6
+    },
+    {
+      "i": 61,
+      "j": -5
+    },
+    {
+      "i": 62,
+      "j": -5
+    },
+    {
+      "i": 63,
+      "j": -5
+    },
+    {
+      "i": 64,
+      "j": -5
+    },
+    {
+      "i": 65,
+      "j": -5
+    },
+    {
+      "i": 66,
+      "j": -5
+    },
+    {
+      "i": 67,
+      "j": -5
+    },
+    {
+      "i": 68,
+      "j": -5
+    },
+    {
+      "i": 69,
+      "j": -5
+    },
+    {
+      "i": 70,
+      "j": -5
+    },
+    {
+      "i": 71,
+      "j": -5
+    },
+    {
+      "i": 72,
+      "j": -5
+    },
+    {
+      "i": 63,
+      "j": -4
+    },
+    {
+      "i": 64,
+      "j": -4
+    },
+    {
+      "i": 65,
+      "j": -4
+    },
+    {
+      "i": 66,
+      "j": -4
+    },
+    {
+      "i": 67,
+      "j": -4
+    },
+    {
+      "i": 68,
+      "j": -4
+    },
+    {
+      "i": 69,
+      "j": -4
+    },
+    {
+      "i": 70,
+      "j": -4
+    },
+    {
+      "i": 65,
+      "j": -3
+    },
+    {
+      "i": 66,
+      "j": -3
+    },
+    {
+      "i": 67,
+      "j": -3
+    },
+    {
+      "i": 68,
+      "j": -3
+    }
+  ],
+  "zona": "bloque-151"
+}

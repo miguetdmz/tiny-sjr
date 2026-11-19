@@ -1,0 +1,61 @@
+{
+  "zona": "fase1",
+  "nombre_zona": "Corredor de Av. Juárez",
+  "tamano_tesela": 512,
+  "lugares": [
+    {
+      "id": "juarez",
+      "nombre": "Avenida Juárez",
+      "detalle": "Eje del corredor: une la plaza con el Puente de la Historia (~1,5 km)",
+      "zona": "fase1",
+      "u": -293,
+      "v": 1008,
+      "tesela": "-1_2"
+    },
+    {
+      "id": "santo-domingo",
+      "nombre": "Templo de Santo Domingo",
+      "detalle": "Sobre Av. Juárez. Altura ESTIMADA de 12 m. OSM también llama Santo Domingo al templo rojo de la plaza: POR CONFIRMAR",
+      "zona": "fase1",
+      "u": -346,
+      "v": 814,
+      "tesela": "-1_2"
+    },
+    {
+      "id": "beaterio",
+      "nombre": "Templo del Beaterio",
+      "detalle": "Hermanas Terceras de San Francisco. Altura ESTIMADA de 9 m",
+      "zona": "fase1",
+      "u": -765,
+      "v": 1306,
+      "tesela": "-1_3"
+    },
+    {
+      "id": "jesucito",
+      "nombre": "Templo de Jesucito de la Portería",
+      "detalle": "OSM solo trae un punto, sin huella: el edificio sale de las huellas IA",
+      "zona": "fase1",
+      "u": -1517,
+      "v": 2131,
+      "tesela": "-3_4"
+    },
+    {
+      "id": "jardin-familia",
+      "nombre": "Jardín de la Familia",
+      "detalle": "Jardín con fuente sobre Av. Juárez",
+      "zona": "fase1",
+      "u": 818,
+      "v": 348,
+      "tesela": "2_1"
+    },
+    {
+      "id": "rio-curva",
+      "nombre": "Río San Juan (curva sur)",
+      "detalle": "Cañada de ±30 m y 10 m de profundidad, ESTIMADA (D-17). POR CONFIRMAR en campo",
+      "zona": "fase1",
+      "u": -548,
+      "v": 2460,
+      "tesela": "-1_5"
+    }
+  ]
+}

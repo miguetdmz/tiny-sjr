@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Tiny San Juan del Río</title>
+  <style>
+    /* D-37: portada con la distribución de la referencia (Tiny València, solo consulta) y aspecto propio:
+       tarjetas crema con borde de tinta y sombra dura; acento cantera dorada. Letra del sistema, redondeada donde exista. */
+    :root { --fondo: #1e2a33; --crema: #fbf3e2; --tinta: #1d1a16; --acento: #e8b13a; --texto2: #5b544a; --borde: 3px solid var(--tinta); --sombra: 4px 4px 0 var(--tinta);
+      --letra: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--fondo); color: var(--tinta); font-family: var(--letra); overflow: hidden; }
+    #mapa { position: fixed; inset: 0; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+    #mapa.arrastrando { cursor: grabbing; }
+    #lienzo { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #pines { position: absolute; inset: 0; pointer-events: none; }
+    .pin { position: absolute; width: 0; height: 0; }
+    .pin button { pointer-events: auto; position: absolute; left: 0; top: 0; transform: translate(-50%, -100%); border: 0; padding: 0; background: none; cursor: pointer; }
+    .pin svg { display: block; width: 26px; height: 34px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.5)); }
+    .pin .num { position: absolute; left: 50%; top: 5px; transform: translateX(-50%); font: 800 12px var(--letra); color: var(--tinta); }
+    .pin.activo svg path { fill: #fff; }
+    .oculto { display: none !important; }
+
+    /* Tarjeta y botón base */
+    .tarjeta { background: var(--crema); border: var(--borde); border-radius: 12px; box-shadow: var(--sombra); }
+    .btn { font: 800 16px var(--letra); color: var(--tinta); background: var(--crema); border: var(--borde); border-radius: 10px; box-shadow: var(--sombra);
+      height: 48px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; white-space: nowrap; }
+    .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--tinta); }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+    .btn.acento { background: var(--acento); }
+    .btn.cuadro { width: 48px; padding: 0; justify-content: center; }
+
+    /* Arriba a la izquierda: marca */
+    #marca { position: fixed; left: 10px; top: 10px; display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 12px; }
+    #marca svg { width: 44px; height: 44px; flex: none; }
+    #marca h1 { margin: 0; font-size: 26px; font-weight: 900; letter-spacing: .01em; line-height: 1.05; }
+    #marca p { margin: 3px 0 0; font-size: 14px; color: var(--texto2); }
+    #marca p b { color: var(--tinta); }
+
+    /* Arriba a la derecha: buscador, Jugar, Compartir, información */
+    #barra { position: fixed; right: 10px; top: 10px; display: flex; gap: 10px; align-items: flex-start; }
+    #buscador { position: relative; width: 360px; }
+    #buscador label { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px; }
+    #buscador input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: 600 16px var(--letra); color: var(--tinta); }
+    #buscador input::placeholder { color: #9a9184; }
+    #resultados { list-style: none; margin: 8px 0 0; padding: 6px; max-height: 50vh; overflow-y: auto; }
+    #resultados li { padding: 7px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+    #resultados li small { color: var(--texto2); margin-left: 6px; }
+    #resultados li.sel, #resultados li:hover { background: var(--acento); }
+    #resultados li.nada { cursor: default; color: var(--texto2); background: none; }
+
+    /* Columna derecha: brújula y controles */
+    #controles { position: fixed; right: 14px; top: 50%; transform: translateY(-40%); display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    #brujula { width: 48px; height: 48px; border-radius: 50%; padding: 0; display: grid; place-items: center; cursor: default; }
+    #brujula svg { width: 40px; height: 40px; }
+
+    /* Abajo: mapa chico, Lugares, créditos */
+    #chico { position: fixed; left: 0; bottom: 0; width: 300px; height: 190px; border-left: 0; border-bottom: 0; border-radius: 0 12px 0 0; overflow: hidden; background: #2a3a45; cursor: pointer; }
+    #chico canvas { width: 100%; height: 100%; display: block; }
+    #b-lugares { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); }
+    #b-lugares:active { transform: translate(calc(-50% + 2px), 2px); }
+    #panel { position: fixed; left: 50%; bottom: 88px; transform: translateX(-50%); width: 330px; padding: 10px 12px; font-size: 14px; }
+    #panel ol { margin: 0; padding-left: 22px; max-height: min(52vh, 460px); overflow-y: auto; } /* D-34: la lista se desplaza dentro */
+    #panel li { cursor: pointer; padding: 3px 0; }
+    #panel li:hover { color: #a5741a; }
+    #panel li.zona { list-style: none; margin: 8px 0 2px -22px; font-weight: 900; cursor: default; }
+    #creditos { position: fixed; right: 0; bottom: 0; background: rgba(251,243,226,.88); padding: 4px 10px; font-size: 12px; color: var(--texto2); border-top-left-radius: 8px; }
+    #creditos a, #creditos button { color: var(--tinta); font: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+
+    #ficha { position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%); width: min(420px, calc(100vw - 24px)); padding: 10px 14px; font-size: 14px; line-height: 1.4; display: none; }
+    #ficha b { font-size: 16px; }
+    #ficha button { float: right; margin-left: 8px; background: none; border: 0; color: var(--tinta); font-size: 20px; cursor: pointer; }
+
+    #info { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: grid; place-items: center; padding: 16px; }
+    #info .tarjeta { max-width: 460px; padding: 18px 20px; font-size: 15px; line-height: 1.45; position: relative; }
+    #info h2 { margin: 0 0 8px; font-size: 22px; font-weight: 900; }
+    #info p { margin: 0 0 10px; }
+    #info .cerrar { position: absolute; right: 12px; top: 10px; background: none; border: 0; font-size: 22px; cursor: pointer; }
+    #aviso { position: fixed; left: 50%; top: 76px; transform: translateX(-50%); padding: 8px 14px; font-weight: 700; font-size: 14px; }
+
+    /* Compu angosta: el buscador se encoge */
+    @media (max-width: 1200px) { #buscador { width: 260px; } }
+    @media (max-width: 980px) { #buscador { width: 200px; } .btn .txt-c { display: none; } #compartir { width: 48px; padding: 0; justify-content: center; } }
+    /* Teléfono: marca y Jugar arriba; buscador en su propia fila; Compartir e información pasan a la columna; sin mapa chico */
+    @media (max-width: 700px) {
+      #marca { right: 10px; padding: 8px 12px 8px 10px; gap: 10px; }
+      #marca svg { width: 34px; height: 34px; }
+      #marca h1 { font-size: 20px; }
+      #marca p { font-size: 12px; }
+      #barra { top: 82px; left: 10px; right: 10px; }
+      #buscador { flex: 1; width: auto; min-width: 0; }
+      #barra #compartir, #barra #b-info { display: none; }
+      #controles { top: auto; bottom: 90px; transform: none; right: 12px; gap: 9px; }
+      #controles .btn, #brujula { width: 42px; height: 42px; }
+      #controles .solo-tel { display: inline-flex !important; }
+      #chico { display: none; }
+      #panel { width: calc(100vw - 24px); bottom: 84px; }
+      #panel ol { max-height: 46vh; }
+      #b-lugares { bottom: 24px; }
+      #ficha { bottom: 84px; width: calc(100vw - 80px); left: 10px; transform: none; }
+      #creditos { font-size: 10px; }
+    }
+    .solo-tel { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="mapa"><canvas id="lienzo"></canvas><div id="pines"></div></div>
+
+  <div id="marca" class="tarjeta">
+    <!-- Icono propio: bloque isométrico con los colores del mapa -->
+    <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 3 40 12.5v19L22 41 4 31.5v-19Z" fill="#e8b13a" stroke="#1d1a16" stroke-width="2.5" stroke-linejoin="round"/><path d="M22 22 40 12.5M22 22 4 12.5M22 22v19" stroke="#1d1a16" stroke-width="2.5"/><path d="M22 22 4 12.5 22 3l18 9.5Z" fill="#c8553d"/><path d="M22 22 4 12.5 22 3l18 9.5Z" fill="none" stroke="#1d1a16" stroke-width="2.5" stroke-linejoin="round"/><path d="M22 22v19L4 31.5v-19Z" fill="#f3e4c0" stroke="#1d1a16" stroke-width="2.5" stroke-linejoin="round"/><path d="M9 20v6M14 23v6" stroke="#1d1a16" stroke-width="2"/></svg>
+    <div><h1>Tiny San Juan del Río</h1><p><b>≈156 km²</b> de San Juan del Río, todavía sin pintar</p></div>
+  </div>
+
+  <div id="barra">
+    <div id="buscador" class="tarjeta">
+      <label><svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <input id="buscar" type="search" placeholder="Busca un lugar de San Juan del Río" autocomplete="off" aria-label="Buscar un lugar"></label>
+      <ul id="resultados" class="oculto"></ul>
+    </div>
+    <a id="jugar" class="btn acento" href="./juego.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12a4 4 0 0 1 4 4v3.5a3 3 0 0 1-5.3 1.9L15 14.5H9l-1.7 1.9A3 3 0 0 1 2 14.5V11a4 4 0 0 1 4-4Z" fill="currentColor"/><path d="M7 9.5v4M5 11.5h4" stroke="#e8b13a" stroke-width="1.8"/><circle cx="16" cy="10.5" r="1.1" fill="#e8b13a"/><circle cx="18" cy="12.5" r="1.1" fill="#e8b13a"/></svg>Jugar</a>
+    <button id="compartir" class="btn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3M6 6.5 10 2.5l4 4M4 10v6.5h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="txt-c">Compartir</span></button>
+    <button id="b-info" class="btn cuadro" aria-label="Acerca del mapa"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="4.5" r="1.8" fill="currentColor"/><path d="M10 8.5v8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+  </div>
+
+  <div id="controles">
+    <div id="brujula" class="tarjeta" title="Norte (la cámara no gira, D-07)"><svg viewBox="0 0 40 40" aria-hidden="true"><g id="aguja"><path d="M20 7 25 20H15Z" fill="#c8553d" stroke="#1d1a16" stroke-width="1.5" stroke-linejoin="round"/><path d="M20 33 25 20H15Z" fill="#fbf3e2" stroke="#1d1a16" stroke-width="1.5" stroke-linejoin="round"/></g><text x="20" y="9" id="letra-n" text-anchor="middle" font-size="9" font-weight="900" font-family="system-ui">N</text></svg></div>
+    <button id="compartir-tel" class="btn cuadro solo-tel" aria-label="Compartir"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3M6 6.5 10 2.5l4 4M4 10v6.5h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button id="info-tel" class="btn cuadro solo-tel" aria-label="Acerca del mapa"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="4.5" r="1.8" fill="currentColor"/><path d="M10 8.5v8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+    <button id="mas" class="btn cuadro" aria-label="Acercar" title="Acercar"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+    <button id="menos" class="btn cuadro" aria-label="Alejar" title="Alejar"><svg viewBox="0 0 20 20"><path d="M4 10h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+    <button id="inicio" class="btn cuadro" aria-label="Ver toda la ciudad" title="Toda la ciudad"><svg viewBox="0 0 20 20"><path d="M2.5 10 10 3l7.5 7H15v7h-3.5v-4.5h-3V17H5v-7Z" fill="currentColor"/></svg></button>
+    <button id="pantalla" class="btn cuadro" aria-label="Pantalla completa" title="Pantalla completa"><svg viewBox="0 0 20 20"><path d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></button>
+  </div>
+
+  <div id="chico" class="tarjeta" title="Toca para ir a ese punto"><canvas id="chico-lienzo"></canvas></div>
+  <div id="panel" class="tarjeta oculto"><ol id="lista"></ol></div>
+  <button id="b-lugares" class="btn" aria-expanded="false" aria-controls="panel">Lugares <span id="flecha">▲</span></button>
+  <div id="ficha" class="tarjeta"><button id="cerrar" aria-label="Cerrar">×</button><b id="f-nombre"></b><br><span id="f-detalle"></span></div>
+  <div id="creditos"><button id="acerca">Acerca de</button> · Datos © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, INEGI, Google Open Buildings, Microsoft, Esri</div>
+  <div id="aviso" class="tarjeta oculto"></div>
+
+  <div id="info" class="oculto">
+    <div class="tarjeta">
+      <button class="cerrar" aria-label="Cerrar">×</button>
+      <h2>Tiny San Juan del Río</h2>
+      <p>San Juan del Río, Qro., en miniatura isométrica: ≈156 bloques de 1 km² hechos con datos abiertos. Todavía sin pintar.</p>
+      <p><b>Datos:</b> calles, lugares y edificios de OpenStreetMap (ODbL); contorno y relieve de INEGI; huellas de edificios de Google Open Buildings y Microsoft; árboles detectados en la imagen de Esri (solo referencia).</p>
+      <p>Las alturas de los edificios emblemáticos son <b>ESTIMADAS</b> y varios lugares siguen <b>POR CONFIRMAR</b>.</p>
+    </div>
+  </div>
+
+  <script type="module" src="./visor.js"></script>
+</body>
+</html>

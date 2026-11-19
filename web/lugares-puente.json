@@ -1,0 +1,43 @@
+{
+  "zona": "puente",
+  "nombre_zona": "Puente de la Historia",
+  "tamano_tesela": 512,
+  "lugares": [
+    {
+      "id": "puente-historia",
+      "nombre": "Puente de la Historia",
+      "detalle": "Puente de piedra de 1711, 110 m de largo, arcos de medio punto (D-15, confirmado)",
+      "zona": "puente",
+      "u": -2707,
+      "v": 2629,
+      "tesela": "-5_5"
+    },
+    {
+      "id": "rio",
+      "nombre": "Río San Juan",
+      "detalle": "Cañada con profundidad ESTIMADA de 10 m (D-15)",
+      "zona": "puente",
+      "u": -2632,
+      "v": 2697,
+      "tesela": "-5_5"
+    },
+    {
+      "id": "puente-juarez",
+      "nombre": "Puente vehicular de Av. Juárez",
+      "detalle": "Puente moderno, al sur del histórico",
+      "zona": "puente",
+      "u": -2658,
+      "v": 2683,
+      "tesela": "-5_5"
+    },
+    {
+      "id": "pasarela",
+      "nombre": "Estructura angosta al norte",
+      "detalle": "Parece muro o acueducto con andador. POR CONFIRMAR qué es (D-15)",
+      "zona": "puente",
+      "u": -2757,
+      "v": 2586,
+      "tesela": "-5_5"
+    }
+  ]
+}

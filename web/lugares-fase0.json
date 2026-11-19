@@ -1,0 +1,61 @@
+{
+  "zona": "fase0",
+  "nombre_zona": "Plaza Independencia",
+  "tamano_tesela": 512,
+  "lugares": [
+    {
+      "id": "jardin",
+      "nombre": "Jardín Independencia",
+      "detalle": "Columna con águila al centro y 6 parterres (D-01, D-02)",
+      "zona": "fase0",
+      "u": 2,
+      "v": -89,
+      "tesela": "0_0"
+    },
+    {
+      "id": "parroquia",
+      "nombre": "Parroquia de San Juan Bautista",
+      "detalle": "Templo amarillo en cruz con cúpula. Altura ESTIMADA",
+      "zona": "fase0",
+      "u": -107,
+      "v": -286,
+      "tesela": "0_-1"
+    },
+    {
+      "id": "templo",
+      "nombre": "Templo de techo rojo (OSM: Santo Domingo)",
+      "detalle": "Segundo templo, con 4 cúpulas por modelar (D-03). Altura ESTIMADA",
+      "zona": "fase0",
+      "u": -228,
+      "v": -221,
+      "tesela": "0_0"
+    },
+    {
+      "id": "atrio",
+      "nombre": "Atrio",
+      "detalle": "Pavimento entre la calle y los templos (D-04)",
+      "zona": "fase0",
+      "u": -136,
+      "v": -142,
+      "tesela": "0_0"
+    },
+    {
+      "id": "fundadores",
+      "nombre": "Plaza Fundadores",
+      "detalle": "Kiosco redondo al centro. Sus árboles se agregan en la corrección manual (D-05, D-11)",
+      "zona": "fase0",
+      "u": -444,
+      "v": -110,
+      "tesela": "-1_0"
+    },
+    {
+      "id": "manzana",
+      "nombre": "Casa de teja roja de referencia",
+      "detalle": "Casa de teja junto a la plaza. Huella detectada por IA, 3 m (DEFAULT 1 nivel (huella IA google))",
+      "zona": "fase0",
+      "u": -131,
+      "v": 40,
+      "tesela": "0_0"
+    }
+  ]
+}

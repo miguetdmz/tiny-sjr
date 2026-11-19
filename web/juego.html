@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Jugar · Tiny San Juan del Río</title>
+  <style>
+    /* D-38: mismo aspecto que la portada (D-37): tarjetas crema con borde de tinta y sombra dura, acento cantera dorada,
+       letra del sistema redondeada. Colores de nivel: semáforo V0 verde, V1 ámbar, V2 rojo (D-20). */
+    :root { --fondo: #1e2a33; --crema: #fbf3e2; --tinta: #1d1a16; --acento: #e8b13a; --texto2: #5b544a; --borde: 3px solid var(--tinta); --sombra: 4px 4px 0 var(--tinta);
+      --letra: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, -apple-system, sans-serif;
+      --v0: #3fae5a; --v1: #e0a526; --v2: #d9534f; --nivel: var(--v0);
+      /* Rango de cada ronda: el mismo color en la ficha final y en el texto de Compartir */
+      --r4: #3fae5a; --r3: #f2c94c; --r2: #e8862f; --r1: #d9534f; --r0: #3a3530; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--fondo); color: var(--tinta); font-family: var(--letra); overflow: hidden; }
+    button { font: inherit; color: inherit; }
+    .oculto { display: none !important; }
+    #grande { position: fixed; inset: 0; cursor: grab; user-select: none; -webkit-user-select: none; }
+
+    /* Tarjeta y botones base (iguales a la portada) */
+    .tarjeta { background: var(--crema); border: var(--borde); border-radius: 12px; box-shadow: var(--sombra); }
+    .btn { font: 800 16px var(--letra); color: var(--tinta); background: var(--crema); border: var(--borde); border-radius: 10px; box-shadow: var(--sombra);
+      height: 48px; padding: 0 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-decoration: none; white-space: nowrap; }
+    .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--tinta); }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+    .btn.acento { background: var(--acento); }
+    .btn.cuadro { width: 48px; padding: 0; }
+    .btn.chico { height: 40px; font-size: 14px; }
+    .btn.chico.cuadro { width: 40px; }
+    .btn.chico svg { width: 18px; height: 18px; }
+    .tecla { display: inline-block; border: 2px solid currentColor; border-radius: 5px; padding: 0 5px; font-size: 11px; line-height: 15px; font-weight: 800; margin-left: 4px; }
+    .chip { max-width: 100%; overflow: hidden; text-overflow: ellipsis; display: inline-block; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; letter-spacing: .05em; padding: 2px 8px; border: 2px solid var(--tinta); border-radius: 999px; background: var(--nivel); white-space: nowrap; }
+
+    /* Barra de arriba */
+    #barra { position: fixed; right: 10px; top: 10px; width: min(440px, calc(100vw - 20px)); padding: 10px 12px; }
+    #barra .fila { display: flex; align-items: center; gap: 10px; }
+    #barra .modo { flex: 1; min-width: 0; }
+    #barra .modo b { display: block; font-size: 18px; font-weight: 900; margin-bottom: 2px; }
+    #barra .dato { text-align: right; font-size: 10px; font-weight: 800; letter-spacing: .06em; color: var(--texto2); }
+    #barra .dato b { display: block; font-size: 20px; font-weight: 900; color: var(--tinta); letter-spacing: 0; }
+    #reto { border-top: 2px dashed var(--tinta); margin-top: 10px; padding-top: 8px; }
+    #reto .pre { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--texto2); }
+    #reto .nombre { font-size: 21px; font-weight: 900; line-height: 1.2; }
+    #reto .nombre span { background: linear-gradient(transparent 58%, var(--acento) 58%); }
+    #reto p { margin: 3px 0 0; font-size: 14px; color: var(--texto2); }
+    #ayudas { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+    #volver { background: none; border: 0; padding: 0; text-decoration: underline; font-size: 14px; font-weight: 700; cursor: pointer; }
+    #pista { border: 2.5px dashed var(--tinta); background: none; border-radius: 9px; padding: 5px 11px; font-size: 13px; font-weight: 800; cursor: pointer; }
+    #pista:disabled { opacity: .4; cursor: default; }
+    #indicacion { margin: 6px 0 0; font-size: 14px; color: var(--texto2); }
+
+    /* Mapa chico */
+    #chico { position: fixed; right: 10px; bottom: 80px; width: 340px; height: 250px; border-radius: 12px; overflow: hidden; background: #26343e; }
+    #chico.ubicar { left: 0; right: auto; bottom: 0; width: 240px; height: 160px; border-left: 0; border-bottom: 0; border-radius: 0 12px 0 0; }
+    #chico.abierto { width: min(70vw, 900px); height: 65vh; }
+    #chico .etiqueta { position: absolute; left: 8px; top: 8px; font-size: 12px; font-weight: 800; background: var(--crema); border: 2px solid var(--tinta); padding: 2px 8px; border-radius: 8px; pointer-events: none; z-index: 1; }
+
+    /* Botones de zoom (columna derecha, como la portada) */
+    #controles { position: fixed; right: 14px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; }
+
+    /* Acción de abajo */
+    #accion { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); display: flex; gap: 10px; align-items: stretch; }
+    #accion .aviso { white-space: nowrap; padding: 0 18px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--texto2); }
+    #ver-mapa { position: fixed; right: 14px; bottom: 20px; }
+
+    /* Resultado de la ronda */
+    #resultado { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); width: min(390px, calc(100vw - 24px)); padding: 14px 16px 16px; text-align: center; }
+    #resultado h2 { margin: 0; font-size: 24px; font-weight: 900; }
+    #resultado .puntos { font-size: 34px; font-weight: 900; margin: 2px 0; }
+    #resultado .puntos small { font-size: 14px; font-weight: 700; color: var(--texto2); }
+    .barrita { height: 14px; border: 2.5px solid var(--tinta); border-radius: 8px; background: #fff; overflow: hidden; margin: 6px 0 10px; }
+    .barrita i { display: block; height: 100%; background: var(--nivel); border-right: 2.5px solid var(--tinta); }
+    .barrita i[style="width: 0%;"] { border-right: 0; }
+    #resultado .lugar { font-weight: 900; font-size: 16px; }
+    #resultado .dist { font-size: 13px; color: var(--texto2); margin-bottom: 4px; }
+    #resultado .desc { font-size: 13px; color: var(--texto2); margin: 0 0 12px; }
+
+    /* Menú Jugar */
+    .fondo-modal { position: fixed; inset: 0; background: rgba(10, 15, 20, .5); display: grid; place-items: center; padding: 12px; }
+    .modal { width: min(660px, 100%); max-height: calc(100vh - 24px); overflow: auto; padding: 20px 22px; position: relative; }
+    .modal h1 { margin: 0 0 4px; font-size: 30px; font-weight: 900; }
+    .modal .intro { margin: 0 0 16px; color: var(--texto2); font-size: 15px; }
+    .modal .cerrar { position: absolute; right: 16px; top: 16px; }
+    .niveles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .nivel { border: var(--borde); box-shadow: var(--sombra); background: var(--crema); border-radius: 10px; padding: 8px 10px 8px 14px; text-align: left; cursor: pointer; position: relative; overflow: hidden; }
+    .nivel::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 7px; background: var(--c); border-right: 2px solid var(--tinta); }
+    .nivel .t { font-weight: 900; letter-spacing: .03em; font-size: 15px; }
+    .nivel .t sup { font-size: 11px; margin-left: 3px; }
+    .nivel .s { font-size: 12px; color: var(--texto2); font-weight: 600; }
+    .nivel:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--tinta); }
+    .nivel[aria-pressed="true"] { background: var(--c); }
+    .nivel[aria-pressed="true"] .s { color: var(--tinta); }
+    .leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--texto2); margin: 12px 0 16px; }
+    .leyenda i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--c); border: 1.5px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+    .modos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .modo-b { display: flex; flex-direction: column; align-items: flex-start; border: var(--borde); box-shadow: var(--sombra); background: #fff8ea; border-radius: 12px; padding: 14px; text-align: left; cursor: pointer; }
+    .modo-b:hover { background: #fdebc0; }
+    .modo-b:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--tinta); }
+    .modo-b svg { width: 38px; height: 38px; }
+    .modo-b b { display: block; font-size: 20px; font-weight: 900; margin: 6px 0 4px; }
+    .modo-b span { font-size: 14px; color: var(--texto2); }
+    .teclas { margin-top: 16px; font-size: 12px; color: var(--texto2); }
+    .nota-maqueta { margin-top: 8px; font-size: 12px; color: var(--texto2); }
+
+    /* J4 · Pantalla final: tarjeta a un lado y, en el mapa, las 5 rondas */
+    #final { position: fixed; left: 10px; top: 10px; width: 400px; max-height: calc(100vh - 20px); overflow: auto; padding: 16px 18px 18px; }
+    #final h1 { margin: 6px 0 0; font-size: 28px; font-weight: 900; }
+    #final .total { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; }
+    #final .total b { font-size: 44px; font-weight: 900; line-height: 1; }
+    #final .total small { font-size: 16px; font-weight: 700; color: var(--texto2); }
+    #fin-msg { margin: 0 0 10px; font-size: 16px; font-weight: 800; }
+    #fin-rondas { list-style: none; margin: 0 0 14px; padding: 0; border-top: 2px solid var(--tinta); }
+    #fin-rondas li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1.5px dashed #b9ad98; }
+    #fin-rondas .num { flex: none; width: 26px; height: 26px; border: 2.5px solid var(--tinta); border-radius: 7px; display: grid; place-items: center; font-weight: 900; font-size: 13px; }
+    #fin-rondas .nom { flex: 1; min-width: 0; font-weight: 800; font-size: 14px; line-height: 1.25; }
+    #fin-rondas .nom small { display: block; font-weight: 600; font-size: 12px; color: var(--texto2); }
+    #fin-rondas .pts { font-weight: 900; font-size: 16px; }
+    #final .botones { display: flex; gap: 10px; flex-wrap: wrap; }
+    #final .botones .btn { flex: 1; }
+    #copiado { font-size: 13px; font-weight: 700; margin-top: 10px; min-height: 18px; white-space: pre-wrap; }
+
+    /* Pantalla de carga */
+    #carga { position: fixed; inset: 0; background: var(--fondo); display: grid; place-items: center; }
+    #carga div { padding: 14px 22px; font-size: 17px; font-weight: 800; }
+
+    @media (max-width: 600px) {
+      #barra { padding: 8px 10px; }
+      #barra .fila { gap: 7px; }
+      #barra .chip { font-size: 10px; letter-spacing: 0; padding: 1px 6px; }
+      #barra .dato { letter-spacing: 0; }
+      #barra .modo b { font-size: 16px; }
+      #barra .dato b { font-size: 17px; }
+      #reto .nombre { font-size: 18px; }
+      #chico { left: 10px; right: 10px; width: auto; height: 38vh; bottom: 80px; }
+      #chico.abierto { width: auto; height: auto; bottom: 80px; }
+      #accion { left: 12px; right: 12px; transform: none; }
+      #accion .aviso, #adivinar { flex: 1; }
+      #controles { top: 150px; transform: none; right: 12px; gap: 9px; }
+      #controles .btn { width: 42px; height: 42px; }
+      .niveles { grid-template-columns: 1fr; gap: 10px; }
+      .modos { grid-template-columns: 1fr; }
+      .modal { padding: 16px; }
+      .modal h1 { font-size: 26px; }
+      #final { left: 10px; right: 10px; top: auto; bottom: 10px; width: auto; max-height: 60vh; padding: 12px 14px 14px; }
+      #final h1 { font-size: 22px; }
+      #final .total b { font-size: 36px; }
+      #fin-rondas li { padding: 5px 0; }
+      /* Los botones quedan siempre a la vista, al pie de la tarjeta; la lista se desplaza arriba de ellos */
+      #final { padding-bottom: 0; }
+      #final .botones { position: sticky; bottom: 0; background: var(--crema); padding: 10px 0 14px; margin: 0 -2px; flex-wrap: nowrap; }
+      #final .botones .btn { padding: 0 10px; font-size: 15px; }
+      #final .botones #fin-menu { flex: none; width: 48px; padding: 0; }
+      #fin-menu span { display: none; }
+      #copiado:empty { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="grande"></div>
+
+  <div id="barra" class="tarjeta oculto">
+    <div class="fila">
+      <button class="btn chico cuadro" id="salir" aria-label="Salir" title="Salir (Esc)"><svg viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+      <div class="modo"><b id="b-modo"></b><span class="chip" id="b-nivel"></span></div>
+      <div class="dato">RONDA<b id="b-ronda"></b></div>
+      <div class="dato">PUNTOS<b id="b-puntos"></b></div>
+      <button class="btn chico cuadro" id="sonido" aria-label="Sonido" title="Sonido"></button>
+    </div>
+    <p id="indicacion">Mira a tu alrededor y marca el sitio en el mapa.</p>
+    <div id="reto" class="oculto">
+      <div class="pre">ENCUENTRA</div>
+      <div class="nombre"><span id="r-nombre"></span></div>
+      <p id="r-desc"></p>
+    </div>
+    <div id="ayudas"><button id="volver">Volver al inicio</button><button id="pista">Pista −1 000</button></div>
+  </div>
+
+  <button id="ver-mapa" class="btn acento oculto"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M10 18s-6-6-6-10a6 6 0 0 1 12 0c0 4-6 10-6 10z"/><circle cx="10" cy="8" r="2"/></svg>Mapa</button>
+  <div id="chico" class="tarjeta oculto"><span class="etiqueta" id="chico-etq">Toca dónde crees que estás</span></div>
+
+  <div id="controles" class="oculto">
+    <button class="btn cuadro" id="c-mas" aria-label="Acercar" title="Acercar"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+    <button class="btn cuadro" id="c-menos" aria-label="Alejar" title="Alejar"><svg viewBox="0 0 20 20"><path d="M4 10h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+    <button class="btn cuadro" id="c-inicio" aria-label="Ver toda la ciudad" title="Toda la ciudad"><svg viewBox="0 0 20 20"><path d="M2.5 10 10 3l7.5 7H15v7h-3.5v-4.5h-3V17H5v-7Z" fill="currentColor"/></svg></button>
+    <button class="btn cuadro" id="c-pantalla" aria-label="Pantalla completa" title="Pantalla completa"><svg viewBox="0 0 20 20"><path d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></button>
+  </div>
+
+  <div id="accion" class="oculto">
+    <button id="cerrar-mapa" class="btn cuadro oculto" aria-label="Cerrar el mapa"><svg viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+    <div class="aviso tarjeta" id="aviso">Pon el pin en el mapa</div>
+    <button id="adivinar" class="btn acento oculto">Adivinar<span class="tecla">Espacio</span></button>
+  </div>
+
+  <div id="resultado" class="tarjeta oculto">
+    <h2 id="res-msg"></h2>
+    <div class="puntos"><span id="res-pts"></span> <small>puntos</small></div>
+    <div class="barrita"><i id="res-barra"></i></div>
+    <div class="lugar" id="res-lugar"></div>
+    <div class="dist" id="res-dist"></div>
+    <p class="desc" id="res-desc"></p>
+    <button id="siguiente" class="btn acento">Siguiente ronda<span class="tecla">Espacio</span></button>
+  </div>
+
+  <div id="menu" class="fondo-modal">
+    <div class="modal tarjeta">
+      <button class="btn chico cuadro cerrar" id="menu-cerrar" aria-label="Cerrar" title="Volver al mapa (Esc)"><svg viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+      <h1>Jugar</h1>
+      <p class="intro">Dos juegos sobre San Juan del Río en miniatura. Cinco rondas cada uno, hasta 5 000 puntos por ronda.</p>
+      <div class="niveles" id="niveles">
+        <button class="nivel" data-nivel="V0" style="--c: var(--v0)" aria-pressed="true"><div class="t">SANJUANENSE<sup>V0</sup></div><div class="s">Turista</div></button>
+        <button class="nivel" data-nivel="V1" style="--c: var(--v1)" aria-pressed="false"><div class="t">SANJUANENSE<sup>V1</sup></div><div class="s">Adoptado</div></button>
+        <button class="nivel" data-nivel="V2" style="--c: var(--v2)" aria-pressed="false"><div class="t">SANJUANENSE<sup>V2</sup></div><div class="s">De toda la vida</div></button>
+      </div>
+      <div class="leyenda">
+        <span style="--c: var(--v0)"><i></i>Verde: lugares que todos conocen</span>
+        <span style="--c: var(--v1)"><i></i>Ámbar: colonias, escuelas, parques y templos de barrio</span>
+        <span style="--c: var(--v2)"><i></i>Rojo: calles y rincones que solo ubica un local</span>
+      </div>
+      <div class="modos">
+        <button class="modo-b" data-modo="caer">
+          <svg viewBox="0 0 34 34" fill="none" stroke="var(--tinta)" stroke-width="2.2" stroke-linejoin="round"><path d="M4 14a13 9 0 0 1 26 0z" fill="var(--acento)"/><path d="M4 14l13 13M30 14L17 27M17 14v13"/><rect x="14" y="27" width="6" height="5" rx="1" fill="var(--acento)"/></svg>
+          <b>¿Dónde caí?</b><span>Caes en un punto de la ciudad. Mira a tu alrededor y marca el sitio en el mapa.</span>
+        </button>
+        <button class="modo-b" data-modo="encontrar">
+          <svg viewBox="0 0 34 34" fill="none" stroke="var(--tinta)" stroke-width="2.6"><circle cx="14" cy="14" r="9" fill="var(--acento)"/><path d="M21 21l9 9" stroke-linecap="round"/></svg>
+          <b>Encuéntralo</b><span>Te damos un lugar. Búscalo en el mapa y pon tu pin: sin nombres ni buscador.</span>
+        </button>
+      </div>
+      <div class="teclas"><span class="tecla">Espacio</span> adivinar y siguiente ronda · <span class="tecla">M</span> mapa grande · <span class="tecla">Esc</span> salir</div>
+      <div class="nota-maqueta" id="nota-catalogo">Los dos modos sacan 5 lugares al azar del nivel que elijas, sin repetir hasta agotarlos. Lugares de OpenStreetMap, por confirmar.</div>
+    </div>
+  </div>
+
+  <div id="final" class="tarjeta oculto">
+    <span class="chip" id="fin-nivel"></span>
+    <h1 id="fin-titulo"></h1>
+    <div class="total"><b id="fin-total"></b><small id="fin-de"></small></div>
+    <div class="barrita"><i id="fin-barra"></i></div>
+    <p id="fin-msg"></p>
+    <ol id="fin-rondas"></ol>
+    <div class="botones">
+      <button class="btn acento" id="fin-otra">Jugar otra vez</button>
+      <button class="btn" id="fin-compartir"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3M6 6.5 10 2.5l4 4M4 10v6.5h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Compartir</button>
+      <button class="btn" id="fin-menu" aria-label="Menú" title="Menú (Esc)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5h12M4 10h12M4 15h12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span>Menú</span></button>
+    </div>
+    <div id="copiado" aria-live="polite"></div>
+  </div>
+
+  <div id="carga" class="oculto"><div class="tarjeta" id="carga-txt">Cargando el mapa…</div></div>
+
+  <script type="module" src="./juego.js"></script>
+</body>
+</html>
