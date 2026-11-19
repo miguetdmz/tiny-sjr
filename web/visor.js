@@ -24,6 +24,8 @@ const ctx = lienzo.getContext('2d');
 // ---------- Vista: centro (u, v) y zoom ----------
 const ZMAX = 6;
 const PINES_ZOOM = 0.08; // ESTIMADO: zoom desde el que se ven los pines
+let zoomPines = PINES_ZOOM; // D-42: baja al zoom de la vista inicial para que al abrir se vean todos los pines
+const PINES_RADIO = 10000; // ESTIMADO (D-42): la vista inicial encuadra los pines a menos de esta distancia de la plaza (deja fuera Cerro Gordo, muy al oriente)
 let ZMIN = 0.015; // se recalcula abajo: alejar hasta ver la ciudad entera en cualquier pantalla (D-18, D-19)
 const vista = { u: 0, v: 0, zoom: 1 };
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -84,7 +86,7 @@ function dibujar() {
   }
   for (const [clave, img] of imagenes) { if (imagenes.size <= 250) break; imagenes.delete(clave); img.src = ''; } // olvidar las más viejas
   // D-37: de lejos los pines del centro se enciman; aparecen al acercarse (el que está abierto, siempre)
-  const verPines = vista.zoom >= PINES_ZOOM;
+  const verPines = vista.zoom >= zoomPines * 0.999;
   for (const p of pines) {
     const s = aPantalla(p.l.u, p.l.v); p.el.style.transform = `translate(${s.x}px, ${s.y}px)`;
     p.el.style.display = verPines || p.el.classList.contains('activo') ? '' : 'none';
@@ -112,8 +114,8 @@ const pines = lug.lugares.map((l, k) => {
   li.textContent = l.nombre; li.value = k + 1;
   li.onclick = () => {
     mostrar(k);
-    // En el teléfono la lista tapa media pantalla: se cierra y el pin queda entre el título y la ficha
-    if (innerWidth < 600) abrirLista(false);
+    // D-42: la lista tapaba el lugar elegido; se cierra siempre y el pin queda entre la barra de arriba y la ficha
+    abrirLista(false);
     centrarEn(l.u, l.v);
   };
   document.getElementById('lista').appendChild(li);
@@ -155,15 +157,30 @@ function zoomEn(px, py, factor) {
   pedirDibujo();
 }
 
-// Vista inicial (D-37, portada): la ciudad completa en el espacio libre entre la barra de arriba y el botón Lugares
-function vistaInicial() {
+// Vista inicial: D-37 la ciudad completa (botón casita); D-42 al abrir, acercada a los lugares con pin, en el espacio libre
+// entre la barra de arriba y el botón Lugares (y a la derecha del mapa chico en la compu)
+const cercanos = lug.lugares.filter((l) => Math.hypot(l.u, l.v) <= PINES_RADIO);
+const cajaPines = { u0: Math.min(...cercanos.map((l) => l.u)) - 300, u1: Math.max(...cercanos.map((l) => l.u)) + 300,
+  v0: Math.min(...cercanos.map((l) => l.v)) - 450, v1: Math.max(...cercanos.map((l) => l.v)) + 150 }; // el pin sobresale ~34 px hacia arriba
+let modoInicial = 'pines';
+function vistaInicial(modo = modoInicial) {
+  modoInicial = modo;
+  const C = modo === 'pines' ? cajaPines : caja;
   const arriba = Math.max(document.getElementById('marca').getBoundingClientRect().bottom, document.getElementById('barra').getBoundingClientRect().bottom) + 10;
   const abajo = document.getElementById('b-lugares').getBoundingClientRect().top - 10;
-  const tel = innerWidth <= 700, izq = 10, der = innerWidth - (tel ? 64 : 74);
-  const z = clamp(Math.min((der - izq) / (caja.u1 - caja.u0), (abajo - arriba) / (caja.v1 - caja.v0)), ZMIN, ZMAX);
+  const tel = innerWidth <= 700, der = innerWidth - (tel ? 64 : 74);
+  let izq = 10, bajo = abajo;
+  const ajuste = (i, b) => Math.min((der - i) / (C.u1 - C.u0), (b - arriba) / (C.v1 - C.v0));
+  // En la compu el mapa chico tapa la esquina de abajo a la izquierda: los pines van a su derecha o arriba de él (lo que deje más zoom)
+  const chico = $('chico').getBoundingClientRect();
+  if (modo === 'pines' && chico.width) {
+    if (ajuste(chico.right + 10, abajo) >= ajuste(10, Math.min(abajo, chico.top - 10))) izq = chico.right + 10; else bajo = Math.min(abajo, chico.top - 10);
+  }
+  const z = clamp(ajuste(izq, bajo), ZMIN, ZMAX);
   vista.zoom = z;
-  vista.u = (caja.u0 + caja.u1) / 2 - ((izq + der) / 2 - innerWidth / 2) / z;
-  vista.v = (caja.v0 + caja.v1) / 2 - ((arriba + abajo) / 2 - innerHeight / 2) / z;
+  if (modo === 'pines') zoomPines = Math.min(PINES_ZOOM, z);
+  vista.u = (C.u0 + C.u1) / 2 - ((izq + der) / 2 - innerWidth / 2) / z;
+  vista.v = (C.v0 + C.v1) / 2 - ((arriba + bajo) / 2 - innerHeight / 2) / z;
   pedirDibujo();
 }
 const $ = (id) => document.getElementById(id);
@@ -175,7 +192,7 @@ function abrirLista(si) {
   if (si) ficha.style.display = 'none';
 }
 $('b-lugares').onclick = () => abrirLista($('panel').classList.contains('oculto'));
-$('inicio').onclick = () => { tocado = false; vistaInicial(); };
+$('inicio').onclick = () => { tocado = false; vistaInicial('ciudad'); };
 if (!document.fullscreenEnabled) $('pantalla').classList.add('oculto'); // el iPhone no deja pantalla completa en una página
 $('pantalla').onclick = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.());
 
@@ -264,8 +281,9 @@ if (catalogo?.lugares?.length >= 3) {
 // ---------- Mapa chico (abajo a la izquierda): la ciudad entera con el recuadro de lo que se ve ----------
 const chicoLienzo = $('chico-lienzo'), cctx = chicoLienzo.getContext('2d');
 function chicoEscala() {
-  const w = chicoLienzo.clientWidth, h = chicoLienzo.clientHeight, m = 8;
-  const s = Math.min((w - 2 * m) / (caja.u1 - caja.u0), (h - 2 * m) / (caja.v1 - caja.v0));
+  // D-42: sin margen y 15 % más cerca (ESTIMADO): las puntas del rombo se recortan un poco y casi no queda fondo oscuro
+  const w = chicoLienzo.clientWidth, h = chicoLienzo.clientHeight;
+  const s = 1.15 * Math.min(w / (caja.u1 - caja.u0), h / (caja.v1 - caja.v0));
   return { w, h, s, ox: w / 2 - ((caja.u0 + caja.u1) / 2) * s, oy: h / 2 - ((caja.v0 + caja.v1) / 2) * s };
 }
 function dibujarChico() {
