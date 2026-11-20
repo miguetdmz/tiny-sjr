@@ -4,7 +4,7 @@
  "generado_por": "scripts/23-juego-lugares-web.mjs",
  "fuente": "OpenStreetMap vía Overpass (ODbL), datos del 2026-11-19T05:47:36Z; esquinas de las descargas de los bloques (data/raw/bloque-*/osm-overpass.json)",
  "conteo": {
-  "V0": 21,
+  "V0": 22,
   "V1": 54,
   "V2": 37
  },
@@ -267,19 +267,35 @@
   },
   {
    "id": "la-parroquia",
-   "nombre": "La parroquia",
+   "nombre": "Parroquia de San Juan Bautista",
    "tipo": "templo",
    "nivel": "V0",
-   "estado": "POR CONFIRMAR",
-   "fuente": "OSM way/556911808 (openstreetmap.org/way/556911808), ODbL",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM way/556911806 (openstreetmap.org/way/556911806), ODbL; nombre y edificio confirmados localmente el 19 nov 2026 (D-45). Antes el pin estaba sobre el Santuario.",
+   "descripcion": "Templo · junto a la Plaza Independencia",
+   "descripcion_fuente": "OSM way/556911806 amenity=place_of_worship; dónde: calculado con las coordenadas del catálogo",
+   "lat": 20.389683,
+   "lon": -99.996254,
+   "x": 23.5,
+   "n": 101.5,
+   "u": -221,
+   "v": -177
+  },
+  {
+   "id": "santuario-de-guadalupe",
+   "nombre": "Santuario de Nuestra Señora de Guadalupe",
+   "tipo": "templo",
+   "nivel": "V0",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM way/556911808 (openstreetmap.org/way/556911808), ODbL; OSM lo llama 'La parroquia'. Nombre confirmado localmente el 19 nov 2026 (D-45).",
    "descripcion": "Templo católico · junto a la Plaza Independencia",
    "descripcion_fuente": "OSM way/556911808 amenity=place_of_worship; dónde: calculado con las coordenadas del catálogo",
-   "lat": 20.389558,
-   "lon": -99.995945,
-   "x": 55.6,
-   "n": 87.5,
-   "u": -90,
-   "v": -202
+   "lat": 20.389599,
+   "lon": -99.99595,
+   "x": 55.1,
+   "n": 92,
+   "u": -104,
+   "v": -208
   },
   {
    "id": "templo-del-sacromonte",

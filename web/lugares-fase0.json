@@ -15,20 +15,20 @@
     {
       "id": "parroquia",
       "nombre": "Parroquia de San Juan Bautista",
-      "detalle": "Templo amarillo en cruz con cúpula. Altura ESTIMADA",
-      "zona": "fase0",
-      "u": -107,
-      "v": -286,
-      "tesela": "0_-1"
-    },
-    {
-      "id": "templo",
-      "nombre": "Templo de techo rojo (OSM: Santo Domingo)",
-      "detalle": "Segundo templo, con 4 cúpulas por modelar (D-03). Altura ESTIMADA",
+      "detalle": "Templo de techo rojo con 4 cúpulas (D-03, D-45). Altura ESTIMADA",
       "zona": "fase0",
       "u": -228,
       "v": -221,
       "tesela": "0_0"
+    },
+    {
+      "id": "templo",
+      "nombre": "Santuario de Nuestra Señora de Guadalupe",
+      "detalle": "Templo amarillo en cruz con cúpula (D-45). Altura ESTIMADA",
+      "zona": "fase0",
+      "u": -107,
+      "v": -286,
+      "tesela": "0_-1"
     },
     {
       "id": "atrio",
