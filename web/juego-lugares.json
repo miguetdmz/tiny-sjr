@@ -4,9 +4,15 @@
  "generado_por": "scripts/23-juego-lugares-web.mjs",
  "fuente": "OpenStreetMap vía Overpass (ODbL), datos del 2026-11-19T05:47:36Z; esquinas de las descargas de los bloques (data/raw/bloque-*/osm-overpass.json)",
  "conteo": {
-  "V0": 22,
+  "V0": 27,
   "V1": 54,
   "V2": 37
+ },
+ "conteo_juego": {
+  "V0": 17,
+  "V1": 13,
+  "V2": 31,
+  "V3": 14
  },
  "lugares": [
   {
@@ -23,7 +29,10 @@
    "x": -2716.1,
    "n": -1043.3,
    "u": -4732,
-   "v": 4846
+   "v": 4846,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "cerro-gordo",
@@ -39,7 +48,10 @@
    "x": 7526.6,
    "n": 394,
    "u": 20174,
-   "v": -12060
+   "v": -12060,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "galerias-san-juan-del-rio",
@@ -55,7 +67,10 @@
    "x": -1661.1,
    "n": -214.4,
    "u": -4092,
-   "v": 2652
+   "v": 2652,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 135
   },
   {
    "id": "instituto-tecnologico-de-san-juan-del-rio",
@@ -71,7 +86,10 @@
    "x": 1262,
    "n": -1626.5,
    "u": 8170,
-   "v": 515
+   "v": 515,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "universidad-autonoma-de-queretaro",
@@ -87,7 +105,10 @@
    "x": 2525.9,
    "n": -1.1,
    "u": 7147,
-   "v": -3572
+   "v": -3572,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "ut-san-juan-del-rio",
@@ -103,7 +124,10 @@
    "x": -1277.3,
    "n": -2312.7,
    "u": 2929,
-   "v": 5077
+   "v": 5077,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "antigua-estacion-de-san-juan-del-rio",
@@ -119,7 +143,10 @@
    "x": 93.6,
    "n": 974,
    "u": -2490,
-   "v": -1510
+   "v": -1510,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 25
   },
   {
    "id": "municipio-de-san-juan-del-rio",
@@ -135,7 +162,10 @@
    "x": 250.2,
    "n": 530.1,
    "u": -792,
-   "v": -1104
+   "v": -1104,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 33
   },
   {
    "id": "mercado-5-de-mayo",
@@ -151,7 +181,10 @@
    "x": 274.2,
    "n": 452.4,
    "u": -504,
-   "v": -1028
+   "v": -1028,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 33
   },
   {
    "id": "museo-de-la-muerte",
@@ -167,15 +200,18 @@
    "x": -3.3,
    "n": -619.8,
    "u": 1744,
-   "v": 881
+   "v": 881,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 25
   },
   {
    "id": "parque-lineal-riviera-del-rio-san-juan",
-   "nombre": "Parque líneal \"Riviera del Río San Juan\"",
+   "nombre": "Paseo del Río",
    "tipo": "parque",
    "nivel": "V0",
-   "estado": "POR CONFIRMAR",
-   "fuente": "OSM node/4704543889 (openstreetmap.org/node/4704543889), ODbL",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM node/4704543889 (openstreetmap.org/node/4704543889), ODbL · Nombre local «Paseo del Río», confirmado el 20 nov 2026 (D-67)",
    "descripcion": "Parque · a 670 m al suroeste de la Plaza Independencia",
    "descripcion_fuente": "OSM node/4704543889 tourism=attraction; dónde: calculado con las coordenadas del catálogo",
    "lat": 20.383575,
@@ -183,7 +219,10 @@
    "x": -333.1,
    "n": -572.4,
    "u": 677,
-   "v": 1293
+   "v": 1293,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 124
   },
   {
    "id": "parque-heroes-de-nacozari",
@@ -199,7 +238,10 @@
    "x": 74.3,
    "n": 923,
    "u": -2401,
-   "v": -1410
+   "v": -1410,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 25
   },
   {
    "id": "plaza-independencia",
@@ -215,7 +257,10 @@
    "x": 8.5,
    "n": 8.2,
    "u": 1,
-   "v": -24
+   "v": -24,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 38
   },
   {
    "id": "puente-de-la-historia",
@@ -231,7 +276,10 @@
    "x": -1425.8,
    "n": -456.4,
    "u": -2742,
-   "v": 2691
+   "v": 2691,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 135
   },
   {
    "id": "imss-hospital-general-de-zona-3",
@@ -247,7 +295,10 @@
    "x": 992.6,
    "n": -1346.1,
    "u": 6615,
-   "v": 500
+   "v": 500,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 65
   },
   {
    "id": "hospital-general",
@@ -263,7 +314,10 @@
    "x": 4438.4,
    "n": -1364.6,
    "u": 16413,
-   "v": -4347
+   "v": -4347,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "la-parroquia",
@@ -279,7 +333,10 @@
    "x": 23.5,
    "n": 101.5,
    "u": -221,
-   "v": -177
+   "v": -177,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 25
   },
   {
    "id": "santuario-de-guadalupe",
@@ -295,7 +352,10 @@
    "x": 55.1,
    "n": 92,
    "u": -104,
-   "v": -208
+   "v": -208,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 25
   },
   {
    "id": "templo-del-sacromonte",
@@ -311,7 +371,10 @@
    "x": 92.1,
    "n": -285.5,
    "u": 1068,
-   "v": 274
+   "v": 274,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 29
   },
   {
    "id": "templo-de-santo-domingo",
@@ -327,7 +390,10 @@
    "x": -347.1,
    "n": -263.6,
    "u": -236,
-   "v": 864
+   "v": 864,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 108
   },
   {
    "id": "templo-de-el-calvario",
@@ -343,7 +409,10 @@
    "x": 11.5,
    "n": -596.8,
    "u": 1721,
-   "v": 828
+   "v": 828,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 25
   },
   {
    "id": "templo-de-el-beaterio-de-hermanas-terceras-de-san-francisco",
@@ -359,7 +428,10 @@
    "x": -605.6,
    "n": -340.1,
    "u": -751,
-   "v": 1337
+   "v": 1337,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 108
   },
   {
    "id": "piramide-del-cerrito",
@@ -375,7 +447,10 @@
    "x": -852.4,
    "n": -1444.9,
    "u": 1676,
-   "v": 3162
+   "v": 3162,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "cerro-banthi",
@@ -391,7 +466,10 @@
    "x": 7599.6,
    "n": 908.2,
    "u": 18926,
-   "v": -12777
+   "v": -12777,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "barrio-de-la-cruz",
@@ -407,7 +485,10 @@
    "x": -976.2,
    "n": -1595.1,
    "u": 1751,
-   "v": 3608
+   "v": 3608,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "casa-blanca",
@@ -423,7 +504,10 @@
    "x": -2486.1,
    "n": -278.5,
    "u": -6244,
-   "v": 3910
+   "v": 3910,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "infonavit-pedregoso",
@@ -439,7 +523,10 @@
    "x": 3320.4,
    "n": -1354.7,
    "u": 13223,
-   "v": -2780
+   "v": -2780,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "el-carrizal",
@@ -455,7 +542,10 @@
    "x": -30.4,
    "n": 3883.6,
    "u": -11070,
-   "v": -5449
+   "v": -5449,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "el-rodeo",
@@ -471,7 +561,10 @@
    "x": 1751.4,
    "n": -3875.1,
    "u": 15914,
-   "v": 3003
+   "v": 3003,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "santa-cruz-escandon",
@@ -487,7 +580,10 @@
    "x": 4287.2,
    "n": 2939.8,
    "u": 3811,
-   "v": -10221
+   "v": -10221,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "san-pedro-ahuacatlan",
@@ -503,7 +599,10 @@
    "x": 1248,
    "n": 5037.6,
    "u": -10719,
-   "v": -8889
+   "v": -8889,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 30
   },
   {
    "id": "san-francisco",
@@ -519,7 +618,10 @@
    "x": 3907.7,
    "n": -3850.3,
    "u": 21943,
-   "v": -81
+   "v": -81,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "santa-matilde",
@@ -535,7 +637,10 @@
    "x": -3092.1,
    "n": 4798.2,
    "u": -22317,
-   "v": -2413
+   "v": -2413,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "delegacion-san-pedro",
@@ -551,7 +656,10 @@
    "x": 907.1,
    "n": 5994,
    "u": -14388,
-   "v": -9760
+   "v": -9760,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "vistha",
@@ -567,7 +675,10 @@
    "x": 2292.5,
    "n": 6462.3,
    "u": -11794,
-   "v": -12381
+   "v": -12381,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "fraccionamiento-loma-alta",
@@ -583,7 +694,10 @@
    "x": 7544.8,
    "n": -1498.6,
    "u": 25579,
-   "v": -8551
+   "v": -8551,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "colegio-la-salle-san-juan-del-rio",
@@ -599,7 +713,10 @@
    "x": -155.5,
    "n": 485.3,
    "u": -1812,
-   "v": -466
+   "v": -466,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "colegio-de-bachilleres-de-la-universidad-autonoma-de-quereta",
@@ -615,7 +732,10 @@
    "x": -754.6,
    "n": -194.7,
    "u": -1584,
-   "v": 1342
+   "v": 1342,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "cbtis-no-145",
@@ -631,7 +751,10 @@
    "x": 905.7,
    "n": -1483.6,
    "u": 6758,
-   "v": 817
+   "v": 817,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 65
   },
   {
    "id": "centro-de-capacitacion-para-el-trabajo-industrial-numero-22",
@@ -647,7 +770,10 @@
    "x": 1928.2,
    "n": 190.9,
    "u": 4914,
-   "v": -2997
+   "v": -2997,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "conalep",
@@ -663,7 +789,10 @@
    "x": 1567.2,
    "n": 4846.3,
    "u": -9275,
-   "v": -9070
+   "v": -9070,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 47
   },
   {
    "id": "colegio-de-bachilleres-del-estado-de-queretaro-10",
@@ -679,7 +808,10 @@
    "x": 1573.3,
    "n": 4964.3,
    "u": -9591,
-   "v": -9245
+   "v": -9245,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 47
   },
   {
    "id": "reforma",
@@ -695,7 +827,10 @@
    "x": 71.9,
    "n": 417.9,
    "u": -978,
-   "v": -693
+   "v": -693,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 82
   },
   {
    "id": "mercado-juarez",
@@ -711,7 +846,10 @@
    "x": 703.6,
    "n": -476.8,
    "u": 3339,
-   "v": -321
+   "v": -321,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 150
   },
   {
    "id": "plaza-aurora",
@@ -727,7 +865,10 @@
    "x": 1028,
    "n": -958.4,
    "u": 5618,
-   "v": -98
+   "v": -98,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "mercado-oriente",
@@ -743,7 +884,10 @@
    "x": 2744.2,
    "n": 139,
    "u": 7369,
-   "v": -4080
+   "v": -4080,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "mercado-del-pedregoso",
@@ -759,7 +903,10 @@
    "x": 3343.7,
    "n": -1426.2,
    "u": 13491,
-   "v": -2712
+   "v": -2712,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 72
   },
   {
    "id": "panteon-municipal-no-1",
@@ -775,7 +922,10 @@
    "x": -1340.1,
    "n": -362.2,
    "u": -2766,
-   "v": 2408
+   "v": 2408,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 73
   },
   {
    "id": "panteon-municipal-no-2",
@@ -791,7 +941,10 @@
    "x": -1516.9,
    "n": -406.8,
    "u": -3140,
-   "v": 2720
+   "v": 2720,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 73
   },
   {
    "id": "panteon-3",
@@ -807,7 +960,10 @@
    "x": -1741.5,
    "n": -1071.8,
    "u": -1894,
-   "v": 3979
+   "v": 3979,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "pateon-san-pedro-ahuacatlan",
@@ -823,7 +979,10 @@
    "x": 1121.9,
    "n": 5240.9,
    "u": -11650,
-   "v": -8998
+   "v": -8998,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 83
   },
   {
    "id": "plaza-fundadores-sjr",
@@ -839,7 +998,10 @@
    "x": -47.7,
    "n": 112.3,
    "u": -453,
-   "v": -91
+   "v": -91,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 29
   },
   {
    "id": "parque-de-los-abuelos",
@@ -855,7 +1017,10 @@
    "x": -312.8,
    "n": -761.9,
    "u": 1270,
-   "v": 1520
+   "v": 1520,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 136
   },
   {
    "id": "paseo-de-guzman",
@@ -871,7 +1036,10 @@
    "x": -880,
    "n": 212.7,
    "u": -3091,
-   "v": 944
+   "v": 944,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 150
   },
   {
    "id": "unidad-deportiva-maquio",
@@ -887,7 +1055,10 @@
    "x": 3676.9,
    "n": -81.6,
    "u": 10631,
-   "v": -5085
+   "v": -5085,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "parque-pedregoso",
@@ -903,7 +1074,10 @@
    "x": 3515.3,
    "n": -1479,
    "u": 14126,
-   "v": -2880
+   "v": -2880,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 72
   },
   {
    "id": "unidad-deportiva-san-juan-del-rio",
@@ -919,7 +1093,10 @@
    "x": 2019.6,
    "n": 3626.7,
    "u": -4546,
-   "v": -7985
+   "v": -7985,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "balneario-ejidal-san-pedro",
@@ -935,7 +1112,10 @@
    "x": 1808,
    "n": 3942.8,
    "u": -6038,
-   "v": -8133
+   "v": -8133,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "plaza-de-santa-cruz-nieto",
@@ -951,7 +1131,10 @@
    "x": 2818.6,
    "n": 1684.9,
    "u": 3207,
-   "v": -6369
+   "v": -6369,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "issste",
@@ -967,7 +1150,10 @@
    "x": 549.4,
    "n": 72.4,
    "u": 1349,
-   "v": -879
+   "v": -879,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "cruz-roja-mexicana",
@@ -983,7 +1169,10 @@
    "x": 1196.9,
    "n": -123.2,
    "u": 3734,
-   "v": -1519
+   "v": -1519,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   },
   {
    "id": "hospital-san-jose",
@@ -999,7 +1188,10 @@
    "x": 2074.2,
    "n": 302,
    "u": 5012,
-   "v": -3361
+   "v": -3361,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "centro-de-salud-de-oriente",
@@ -1015,7 +1207,10 @@
    "x": 3298,
    "n": 185.2,
    "u": 8804,
-   "v": -4926
+   "v": -4926,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "imss-unidad-de-medicina-familiar-no-7",
@@ -1031,7 +1226,10 @@
    "x": 3398.2,
    "n": -1048.8,
    "u": 12578,
-   "v": -3323
+   "v": -3323,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "estacion-de-bomberos-sjr",
@@ -1047,7 +1245,10 @@
    "x": 1201.8,
    "n": -153.7,
    "u": 3834,
-   "v": -1482
+   "v": -1482,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "cinepolis",
@@ -1063,7 +1264,10 @@
    "x": 1218.4,
    "n": 589.8,
    "u": 1778,
-   "v": -2557
+   "v": -2557,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "ciudad-judicial-san-juan-del-rio",
@@ -1079,7 +1283,10 @@
    "x": -34.7,
    "n": -1399,
    "u": 3859,
-   "v": 2027
+   "v": 2027,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "templo-de-jesucito-de-la-porteria",
@@ -1095,7 +1302,10 @@
    "x": -1025.3,
    "n": -488.9,
    "u": -1517,
-   "v": 2141
+   "v": 2141,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 136
   },
   {
    "id": "templo-del-seminario-xaveriano",
@@ -1111,7 +1321,10 @@
    "x": -459.8,
    "n": -1067.8,
    "u": 1720,
-   "v": 2160
+   "v": 2160,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 136
   },
   {
    "id": "iglesia-de-san-isidro-labrador",
@@ -1127,7 +1340,10 @@
    "x": 516.6,
    "n": 2164.6,
    "u": -4661,
-   "v": -3792
+   "v": -3792,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "parroquia-virgen-de-guadalupe",
@@ -1143,7 +1359,10 @@
    "x": 2974.3,
    "n": 614.3,
    "u": 6675,
-   "v": -5075
+   "v": -5075,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "nueva-iglesia-de-santa-cruz-nieto",
@@ -1159,7 +1378,10 @@
    "x": 2759.6,
    "n": 1712.1,
    "u": 2963,
-   "v": -6324
+   "v": -6324,
+   "popularidad": "Solo la zona",
+   "nivel_juego": "V3",
+   "radio_m": 150
   },
   {
    "id": "parroquia-de-san-jose-obrero",
@@ -1175,7 +1397,10 @@
    "x": 3767.6,
    "n": -939.9,
    "u": 13315,
-   "v": -3999
+   "v": -3999,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "santa-maria-de-guadalupe",
@@ -1191,7 +1416,10 @@
    "x": 4307.8,
    "n": 824.6,
    "u": 9852,
-   "v": -7258
+   "v": -7258,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 150
   },
   {
    "id": "nuevo-templo-san-pedro-apostol",
@@ -1207,7 +1435,10 @@
    "x": 1278,
    "n": 5105.1,
    "u": -10824,
-   "v": -9027
+   "v": -9027,
+   "popularidad": "Mucha gente",
+   "nivel_juego": "V2",
+   "radio_m": 30
   },
   {
    "id": "parroquia-san-pedro-apostol",
@@ -1223,7 +1454,10 @@
    "x": 852.2,
    "n": 6104,
    "u": -14854,
-   "v": -9838
+   "v": -9838,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "instituto-santiago-canchas-deportivas",
@@ -1239,7 +1473,10 @@
    "x": -202.4,
    "n": -1602.2,
    "u": 3959,
-   "v": 2552
+   "v": 2552,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "campo-de-santa-cruz-nieto",
@@ -1255,7 +1492,10 @@
    "x": 2594.7,
    "n": 1298.2,
    "u": 3667,
-   "v": -5505
+   "v": -5505,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "tenis-jardines-del-valle",
@@ -1271,7 +1511,10 @@
    "x": 2978.1,
    "n": 1359.6,
    "u": 4578,
-   "v": -6134
+   "v": -6134,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "cancha-de-jardines-del-valle",
@@ -1287,7 +1530,10 @@
    "x": 3301.5,
    "n": 1738.3,
    "u": 4421,
-   "v": -7127
+   "v": -7127,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "acuatica-municipal-oriente-pedregoso",
@@ -1303,7 +1549,10 @@
    "x": 3555.8,
    "n": -1514.2,
    "u": 14340,
-   "v": -2887
+   "v": -2887,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "cancha-dale-quimica",
@@ -1319,7 +1568,10 @@
    "x": 3809.3,
    "n": -2515.3,
    "u": 17889,
-   "v": -1830
+   "v": -1830,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-calle-ignacio-lopez-rayon-y-calle-jose-maria-more",
@@ -1335,7 +1587,10 @@
    "x": 49.1,
    "n": 150.7,
    "u": -287,
-   "v": -283
+   "v": -283,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-alvaro-obregon-y-calle-jose-maria-morelos",
@@ -1351,7 +1606,10 @@
    "x": 501.5,
    "n": 320.4,
    "u": 512,
-   "v": -1162
+   "v": -1162,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-calle-fernando-de-tapia-y-carretera-panamericana-",
@@ -1367,7 +1625,10 @@
    "x": 336.6,
    "n": -502.5,
    "u": 2373,
-   "v": 235
+   "v": 235,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-benito-juarez-poniente-y-calle-cuauhtemoc",
@@ -1383,7 +1644,10 @@
    "x": -515,
    "n": -324.3,
    "u": -539,
-   "v": 1187
+   "v": 1187,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-benito-juarez-oriente-y-calle-primavera",
@@ -1399,7 +1663,10 @@
    "x": 764.6,
    "n": -623.6,
    "u": 3926,
-   "v": -199
+   "v": -199,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-constituyentes-y-boulevard-pablo-cabrera",
@@ -1415,7 +1682,10 @@
    "x": 859.4,
    "n": 671.2,
    "u": 532,
-   "v": -2165
+   "v": -2165,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-boulevard-paseo-de-la-venta-y-general-felipe-ange",
@@ -1431,7 +1701,10 @@
    "x": -1413.9,
    "n": 593.7,
    "u": -5678,
-   "v": 1160
+   "v": 1160,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-amealco-y-carretera-panamericana-a-queretaro",
@@ -1447,7 +1720,10 @@
    "x": -1502.5,
    "n": -487.8,
    "u": -2870,
-   "v": 2815
+   "v": 2815,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-universidad-y-calle-rio-tiber",
@@ -1463,7 +1739,10 @@
    "x": 1582.5,
    "n": 288.2,
    "u": 3661,
-   "v": -2646
+   "v": -2646,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-calle-adolfo-lopez-mateos-y-general-felipe-angele",
@@ -1479,7 +1758,10 @@
    "x": -1517,
    "n": 675,
    "u": -6200,
-   "v": 1191
+   "v": 1191,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-calle-canarios-y-carretera-panamericana-a-quereta",
@@ -1495,7 +1777,10 @@
    "x": 587.6,
    "n": -1551.2,
    "u": 6049,
-   "v": 1363
+   "v": 1363,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-amealco-y-avenida-ingeniero-luis-romero-soto",
@@ -1511,7 +1796,10 @@
    "x": -1598.7,
    "n": -623.6,
    "u": -2758,
-   "v": 3143
+   "v": 3143,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-carretera-mexico-queretaro-cuota-y-prolongacion-p",
@@ -1527,7 +1815,10 @@
    "x": -1299.7,
    "n": -1244.7,
    "u": -156,
-   "v": 3598
+   "v": 3598,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-constituyentes-y-calle-epigmenio-gonzalez",
@@ -1543,7 +1834,10 @@
    "x": 1097.3,
    "n": 1933.2,
    "u": -2364,
-   "v": -4286
+   "v": -4286,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-universidad-y-calle-lima",
@@ -1559,7 +1853,10 @@
    "x": 2604.2,
    "n": 186.8,
    "u": 6838,
-   "v": -3949
+   "v": -3949,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-constituyentes-y-avenida-ocho-oriente",
@@ -1575,7 +1872,10 @@
    "x": 1225.3,
    "n": 2509.8,
    "u": -3633,
-   "v": -5282
+   "v": -5282,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-prolongacion-el-roble-y-san-juan-del-rio-amealco-",
@@ -1591,7 +1891,10 @@
    "x": -2243.5,
    "n": -1865.4,
    "u": -1070,
-   "v": 5811
+   "v": 5811,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-central-y-avenida-ocho-oriente",
@@ -1607,7 +1910,10 @@
    "x": 1573.8,
    "n": 2463.7,
    "u": -2517,
-   "v": -5710
+   "v": -5710,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-avenida-lomas-de-san-juan-y-avenida-universidad",
@@ -1623,7 +1929,10 @@
    "x": 3571.5,
    "n": 127.6,
    "u": 9741,
-   "v": -5231
+   "v": -5231,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "esquina-de-carretera-mexico-queretaro-cuota-y-gardenia",
@@ -1639,7 +1948,10 @@
    "x": -3380.8,
    "n": 1508.5,
    "u": -13829,
-   "v": 2648
+   "v": 2648,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "hombre-a-caballo",
@@ -1655,7 +1967,10 @@
    "x": 339.3,
    "n": -514.8,
    "u": 2416,
-   "v": 248
+   "v": 248,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "carreta-sjr",
@@ -1671,7 +1986,10 @@
    "x": 684.7,
    "n": -219.3,
    "u": 2557,
-   "v": -658
+   "v": -658,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "estatua-a-los-abuelos",
@@ -1687,7 +2005,10 @@
    "x": -313.5,
    "n": -766.6,
    "u": 1282,
-   "v": 1528
+   "v": 1528,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "santa-cruz",
@@ -1703,7 +2024,10 @@
    "x": 2838.5,
    "n": 1701.5,
    "u": 3216,
-   "v": -6421
+   "v": -6421,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "fuente-central",
@@ -1719,7 +2043,10 @@
    "x": 3961,
    "n": -592.6,
    "u": 12880,
-   "v": -4764
+   "v": -4764,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "mural-frida-khalo",
@@ -1735,7 +2062,10 @@
    "x": 769.2,
    "n": 6080.2,
    "u": -15022,
-   "v": -9686
+   "v": -9686,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "kiosko-parque-loma-alta-1",
@@ -1751,7 +2081,10 @@
    "x": 7372.3,
    "n": -1343,
    "u": 24651,
-   "v": -8527
+   "v": -8527,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "kiosko-parque-loma-alta-2",
@@ -1767,7 +2100,10 @@
    "x": 7684.4,
    "n": -1539.5,
    "u": 26089,
-   "v": -8690
+   "v": -8690,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "mesa-de-piedra",
@@ -1783,7 +2119,10 @@
    "x": 7977.5,
    "n": -1621.9,
    "u": 27151,
-   "v": -8988
+   "v": -8988,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "jardin-del-eden-san-jose-obrero",
@@ -1799,7 +2138,10 @@
    "x": 3697.2,
    "n": -881.3,
    "u": 12950,
-   "v": -3982
+   "v": -3982,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
   },
   {
    "id": "zona-de-juegos-en-parque",
@@ -1815,7 +2157,105 @@
    "x": 789.8,
    "n": 6093.5,
    "u": -15001,
-   "v": -9734
+   "v": -9734,
+   "popularidad": "Quitar del juego",
+   "nivel_juego": null,
+   "radio_m": null
+  },
+  {
+   "id": "portal-del-diezmo",
+   "nombre": "Portal del Diezmo",
+   "tipo": "historico",
+   "nivel": "V0",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM way/745408326 (openstreetmap.org/way/745408326), ODbL · ubicación y popularidad confirmadas el 20 nov 2026 (D-67)",
+   "descripcion": "Edificio del centro · a 210 m al sur de la Plaza Independencia",
+   "descripcion_fuente": "OSM way/745408326 building=yes; nombre local confirmado (D-67); dónde: calculado con las coordenadas del catálogo",
+   "lat": 20.386962,
+   "lon": -99.996211,
+   "x": 26.1,
+   "n": -199.7,
+   "u": 639,
+   "v": 245,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 27
+  },
+  {
+   "id": "jardin-de-la-familia",
+   "nombre": "Jardín de la Familia",
+   "tipo": "parque",
+   "nivel": "V0",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM way/551491027 (openstreetmap.org/way/551491027), ODbL · ubicación y popularidad confirmadas el 20 nov 2026 (D-67)",
+   "descripcion": "Parque · a 280 m al sur de la Plaza Independencia",
+   "descripcion_fuente": "OSM way/551491027 leisure=park; dónde: calculado con las coordenadas del catálogo",
+   "lat": 20.386348,
+   "lon": -99.996252,
+   "x": 21.5,
+   "n": -267.6,
+   "u": 818,
+   "v": 348,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V0",
+   "radio_m": 27
+  },
+  {
+   "id": "plaza-san-juan",
+   "nombre": "Plaza San Juan",
+   "tipo": "comercio",
+   "nivel": "V0",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM way/551473499 (openstreetmap.org/way/551473499), ODbL · ubicación y popularidad confirmadas el 20 nov 2026 (D-67)",
+   "descripcion": "Plaza comercial · a 3,0 km al este de la Plaza Independencia",
+   "descripcion_fuente": "catálogo tipo \"comercio\" (D-29); dónde: calculado con las coordenadas del catálogo",
+   "lat": 20.384979,
+   "lon": -99.968088,
+   "x": 2959.7,
+   "n": -436.7,
+   "u": 9607,
+   "v": -3593,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
+  },
+  {
+   "id": "cecuco",
+   "nombre": "CECUCO",
+   "tipo": "cultura",
+   "nivel": "V0",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM way/550802124 (openstreetmap.org/way/550802124), ODbL · ubicación y popularidad confirmadas el 20 nov 2026 (D-67)",
+   "descripcion": "Centro de convenciones · a 1,6 km al sureste de la Plaza Independencia",
+   "descripcion_fuente": "OSM way/550802124 amenity=conference_centre; dónde: calculado con las coordenadas del catálogo",
+   "lat": 20.37587,
+   "lon": -99.989634,
+   "x": 705.1,
+   "n": -1431.5,
+   "u": 6043,
+   "v": 1027,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
+  },
+  {
+   "id": "kimberly-clark",
+   "nombre": "Kimberly Clark",
+   "tipo": "industria",
+   "nivel": "V0",
+   "estado": "CONFIRMADO",
+   "fuente": "OSM way/550801092 (openstreetmap.org/way/550801092), ODbL · ubicación y popularidad confirmadas el 20 nov 2026 (D-67) · Pin en la entrada principal: Av. Central, cerca de la esquina con Av. Benito Juárez Oriente (D-68/D-69; punto exacto ESTIMADO, ~60 m al norte de la esquina)",
+   "descripcion": "Planta industrial · a 1,5 km al sureste de la Plaza Independencia",
+   "descripcion_fuente": "OSM way/550801092 landuse=industrial; dónde: calculado con las coordenadas del catálogo",
+   "lat": 20.38005,
+   "lon": -99.98522,
+   "x": 1168.6,
+   "n": -971.6,
+   "u": 6053,
+   "v": -279,
+   "popularidad": "Todo San Juan",
+   "nivel_juego": "V1",
+   "radio_m": 150
   }
  ]
 }

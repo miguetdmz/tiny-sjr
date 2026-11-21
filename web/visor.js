@@ -249,7 +249,7 @@ const norm = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCa
 const buscables = (() => {
   const vistos = new Set(), out = [];
   lug.lugares.forEach((l, k) => { vistos.add(norm(l.nombre)); out.push({ nombre: l.nombre, detalle: l.detalle, grupo: l.nombre_zona, u: l.u, v: l.v, k }); });
-  for (const l of catalogo?.lugares ?? []) if (!vistos.has(norm(l.nombre))) { vistos.add(norm(l.nombre)); out.push({ nombre: l.nombre, detalle: `${l.descripcion} · OSM, por confirmar`, grupo: l.descripcion.split(' · ')[0], u: l.u, v: l.v }); }
+  for (const l of catalogo?.lugares ?? []) if (!vistos.has(norm(l.nombre))) { vistos.add(norm(l.nombre)); out.push({ nombre: l.nombre, detalle: `${l.descripcion} · ${l.estado === 'CONFIRMADO' ? 'OSM, confirmado' : 'OSM, por confirmar'}`, grupo: l.descripcion.split(' · ')[0], u: l.u, v: l.v }); }
   return out.map((x) => ({ ...x, n: norm(x.nombre) }));
 })();
 let hallados = [], sel = 0;

@@ -1,4 +1,4 @@
-// Fase J (D-20). Dos modos ("¿Dónde caí?" y "Encuéntralo"), niveles SANJUANENSE V0/V1/V2, 5 rondas y puntaje real.
+// Fase J (D-20). Dos modos ("¿Dónde caí?" y "Encuéntralo"), niveles SANJUANENSE V0 a V3 (N2, D-76), 5 rondas y puntaje real.
 // J2: "¿Dónde caí?" saca sus 5 rondas al azar del catálogo del nivel elegido (web/juego-lugares.json, D-29/D-30).
 // J3: "Encuéntralo" también saca sus 5 rondas del catálogo del nivel, con la descripción de cada lugar (qué es + dónde, D-36).
 // J4: pantalla final con las 5 rondas en el mapa y Compartir en texto (D-38). Aspecto de la portada (D-37).
@@ -12,15 +12,20 @@ const MAX = 5000;
 const RADIO_CAER_M = 300;        // cuánto puedes moverte alrededor del punto donde caíste
 const PISTA_COSTO = 1000;
 const PISTA_RADIO_M = 500;       // círculo de la pista
-/** Puntos: 5 000 hasta 25 m; luego baja como exponencial (≈2 500 a 500 m, ≈1 200 a 1 km, ≈65 a 3 km) */
-const puntaje = (d) => (d <= 25 ? MAX : Math.round(MAX * Math.exp(-(d - 25) / 685)));
+/** Puntos (D-76): 5 000 dentro del radio del lugar (r = radio_m, 25-150 m según qué tan junto está de otros); luego bajan como
+ *  exponencial con escala de 800 m. f = tolerancia del nivel: V0 1,0 · V1 0,9 · V2 0,8 · V3 0,7 (cada nivel 10 % más estricto). */
+const puntaje = (d, r = 25, f = 1) => (d <= r * f ? MAX : Math.round(MAX * Math.exp(-(d - r * f) / (800 * f))));
 const MENSAJES = [[4500, '¡En el blanco!'], [3000, '¡Muy cerca!'], [1500, 'Vas bien'], [400, 'Te faltó'], [0, 'Ni de cerca']];
 /** Rango de una ronda (4 = en el blanco … 0 = ni de cerca): el mismo color en la ficha final (--r#) y en Compartir */
 const rango = (pts) => 4 - MENSAJES.findIndex(([m]) => pts >= m);
 const CUADROS = ['⬛', '🟥', '🟧', '🟨', '🟩'];
 /** Mensaje de la partida según el promedio por ronda (mismos cortes que la ronda) */
 const MENSAJES_FIN = ['Hay que darse una vuelta por San Juan', 'Te falta caminar la ciudad', 'Vas bien: sigue paseando', 'Conoces bien San Juan', '¡Sanjuanense de verdad!'];
-const NIVELES = { V0: { leyenda: 'Turista', color: '--v0' }, V1: { leyenda: 'Adoptado', color: '--v1' }, V2: { leyenda: 'De toda la vida', color: '--v2' } };
+// N2 (D-76): 4 niveles por popularidad (N1). f = tolerancia de puntos del nivel.
+const NIVELES = {
+  V0: { leyenda: 'Turista', color: '--v0', f: 1.0 }, V1: { leyenda: 'Vecino', color: '--v1', f: 0.9 },
+  V2: { leyenda: 'Adoptado', color: '--v2', f: 0.8 }, V3: { leyenda: 'De toda la vida', color: '--v3', f: 0.7 },
+};
 const MODOS = { caer: '¿Dónde caí?', encontrar: 'Encuéntralo' };
 
 const $ = (id) => document.getElementById(id);
@@ -157,8 +162,7 @@ function elegirNivel(n) {
   for (const b of document.querySelectorAll('.nivel')) b.setAttribute('aria-pressed', String(b.dataset.nivel === n));
 }
 for (const b of document.querySelectorAll('.nivel')) b.onclick = () => elegirNivel(b.dataset.nivel);
-// Cuántos lugares tiene cada nivel (los mismos en los dos modos)
-for (const b of document.querySelectorAll('.nivel')) b.querySelector('.s').textContent += ` · ${catalogo.conteo[b.dataset.nivel]} lugares`;
+// D-65: el número de lugares por nivel ya no se le muestra al jugador
 for (const b of document.querySelectorAll('.modo-b')) b.onclick = () => empezar(b.dataset.modo);
 $('menu-cerrar').onclick = () => { location.href = './index.html'; };
 // ---------- Qué se ve (una sola regla para compu y teléfono) ----------
@@ -223,7 +227,7 @@ function sacar(lista, n, clave) {
 }
 function empezar(modo) {
   J.modo = modo; J.ronda = 0; J.puntos = []; J.historial = [];
-  J.orden = sacar(catalogo.lugares.filter((l) => l.nivel === J.nivel), RONDAS, `tsjr-bolsa-${modo}-${J.nivel}`);
+  J.orden = sacar(catalogo.lugares.filter((l) => l.nivel_juego === J.nivel), RONDAS, `tsjr-bolsa-${modo}-${J.nivel}`);
   mostrar('menu', false); mostrar('final', false);
   $('b-modo').textContent = MODOS[modo];
   // En la barra solo el nivel (cabe en el teléfono); la leyenda va de título y en la pantalla final
@@ -277,7 +281,7 @@ $('pista').onclick = () => {
 function adivinar() {
   if (J.fase !== 'jugando' || !J.pin) return;
   const d = distancia(J.pin, J.lugar);
-  let pts = puntaje(d);
+  let pts = puntaje(d, J.lugar.radio_m ?? 25, NIVELES[J.nivel].f);
   if (J.pista) pts = Math.max(0, pts - PISTA_COSTO);
   J.puntos.push(pts); J.historial.push({ pin: J.pin, lugar: J.lugar, d, pts, pista: !!J.pista }); J.fase = 'resultado';
   actualizarBarra(); $('b-ronda').textContent = `${J.ronda + 1}/${RONDAS}`;
