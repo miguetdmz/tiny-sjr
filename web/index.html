@@ -65,7 +65,9 @@
     #panel li { cursor: pointer; padding: 3px 0; }
     #panel li:hover { color: #a5741a; }
     #panel li.zona { list-style: none; margin: 8px 0 2px -22px; font-weight: 900; cursor: default; }
-    #creditos { position: fixed; right: 0; bottom: 0; background: rgba(251,243,226,.88); padding: 4px 10px; font-size: 12px; color: var(--texto2); border-top-left-radius: 8px; }
+    /* D-78: créditos sin fondo y con letra más chica; un halo crema los deja leer sobre el mapa */
+    #creditos { position: fixed; right: 0; bottom: 0; background: none; padding: 3px 8px; font-size: 10px; color: var(--tinta);
+      text-shadow: 0 0 3px var(--crema), 0 0 2px var(--crema); }
     #creditos a, #creditos button { color: var(--tinta); font: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
 
     #ficha { position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%); width: min(420px, calc(100vw - 24px)); padding: 10px 14px; font-size: 14px; line-height: 1.4; display: none; }
@@ -82,7 +84,7 @@
     /* Compu angosta: el buscador se encoge */
     @media (max-width: 1200px) { #buscador { width: 260px; } }
     @media (max-width: 980px) { #buscador { width: 200px; } .btn .txt-c { display: none; } #compartir { width: 48px; padding: 0; justify-content: center; } }
-    /* Teléfono: marca y Jugar arriba; buscador en su propia fila; Compartir e información pasan a la columna; sin mapa chico */
+    /* Teléfono: marca y Jugar arriba; buscador en su propia fila; Compartir e información pasan a la columna; mapa chico con botón (D-78) */
     @media (max-width: 700px) {
       #marca { right: 10px; padding: 8px 12px 8px 10px; gap: 10px; }
       #marca svg { width: 34px; height: 34px; }
@@ -94,13 +96,40 @@
       #controles { top: auto; bottom: 90px; transform: none; right: 12px; gap: 9px; }
       #controles .btn, #brujula { width: 42px; height: 42px; }
       #controles .solo-tel { display: inline-flex !important; }
-      #chico { display: none; }
       #panel { width: calc(100vw - 24px); bottom: 84px; }
       #panel ol { max-height: 46vh; }
       #b-lugares { bottom: 24px; }
       #ficha { bottom: 84px; width: calc(100vw - 80px); left: 10px; transform: none; }
-      #creditos { font-size: 10px; }
+      #creditos { font-size: 9px; }
     }
+    /* D-78: teléfono acostado (horizontal): marca y barra compactas, controles debajo de la barra, sin subtítulo */
+    @media (max-height: 500px) and (min-width: 701px) {
+      .btn { height: 40px; font-size: 15px; padding: 0 12px; }
+      .btn.cuadro, #compartir { width: 40px; }
+      #marca { padding: 5px 10px 5px 8px; gap: 8px; }
+      #marca svg { width: 28px; height: 28px; }
+      #marca h1 { font-size: 17px; }
+      #marca p { display: none; }
+      #buscador { width: 220px; }
+      #buscador label { height: 40px; }
+      #buscador input { font-size: 15px; }
+      #controles { top: 62px; transform: none; gap: 7px; right: 12px; }
+      #controles .btn, #brujula { width: 38px; height: 38px; }
+      #brujula svg { width: 32px; height: 32px; }
+      #b-lugares { bottom: 16px; }
+      #panel { bottom: 66px; }
+      #panel ol { max-height: 52vh; }
+      #ficha { bottom: 66px; }
+      #creditos { font-size: 9px; }
+    }
+    /* D-78: en el teléfono (de pie o acostado) el mapa chico se abre con el botón «Mapa», del mismo color que Jugar */
+    #b-mapa { display: none; position: fixed; left: 10px; }
+    @media (max-width: 700px), (max-height: 500px) {
+      #b-mapa { display: inline-flex; bottom: 24px; }
+      #chico { display: none; left: 10px; bottom: 82px; width: min(300px, 62vw); height: 150px; border: var(--borde); border-radius: 12px; }
+      #chico.abierto { display: block; }
+    }
+    @media (max-height: 500px) { #b-mapa { bottom: 16px; } #chico { bottom: 66px; height: min(150px, 42vh); } }
     .solo-tel { display: none !important; }
   </style>
 </head>
@@ -135,6 +164,7 @@
   </div>
 
   <div id="chico" class="tarjeta" title="Toca para ir a ese punto"><canvas id="chico-lienzo"></canvas></div>
+  <button id="b-mapa" class="btn acento" aria-expanded="false" aria-controls="chico"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 5l5-2 6 2 5-2v12l-5 2-6-2-5 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 3v12M13 5v12" stroke="currentColor" stroke-width="2"/></svg>Mapa</button>
   <div id="panel" class="tarjeta oculto"><ol id="lista"></ol></div>
   <button id="b-lugares" class="btn" aria-expanded="false" aria-controls="panel">Lugares <span id="flecha">▲</span></button>
   <div id="ficha" class="tarjeta"><button id="cerrar" aria-label="Cerrar">×</button><b id="f-nombre"></b><br><span id="f-detalle"></span></div>

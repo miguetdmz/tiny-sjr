@@ -214,9 +214,15 @@ function abrirLista(si) {
   $('panel').classList.toggle('oculto', !si);
   $('b-lugares').setAttribute('aria-expanded', String(si));
   $('flecha').textContent = si ? '▼' : '▲';
-  if (si) ficha.style.display = 'none';
+  if (si) { ficha.style.display = 'none'; $('chico').classList.remove('abierto'); $('b-mapa').setAttribute('aria-expanded', 'false'); }
 }
 $('b-lugares').onclick = () => abrirLista($('panel').classList.contains('oculto'));
+// D-78: en el teléfono el mapa chico se abre y se cierra con el botón «Mapa» (en la compu siempre está a la vista)
+$('b-mapa').onclick = () => {
+  const si = !$('chico').classList.contains('abierto');
+  $('chico').classList.toggle('abierto', si); $('b-mapa').setAttribute('aria-expanded', String(si));
+  if (si) { abrirLista(false); requestAnimationFrame(() => { dibujarChico(); }); }
+};
 $('inicio').onclick = () => { tocado = false; vistaInicial('ciudad'); };
 if (!document.fullscreenEnabled) $('pantalla').classList.add('oculto'); // el iPhone no deja pantalla completa en una página
 $('pantalla').onclick = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.());
