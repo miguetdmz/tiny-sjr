@@ -1,0 +1,272 @@
+{
+ "nota": "Lugares atractivos del visor (D-80). Generado por scripts/49-lugares-atractivos.mjs: no se edita a mano.",
+ "lugares": [
+  {
+   "id": "plaza-independencia",
+   "nombre": "Plaza Independencia",
+   "detalle": "Su columna se pensó para un busto de la emperatriz Carlota y terminó dedicada a la Independencia. Un rayo derribó su primera águila de bronce; la escultura actual es de 1981.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": 1,
+   "v": -24,
+   "fuentes": [
+    "https://www.ciudadespatrimonio.mx/monumento-a-la-independencia/",
+    "https://es.wikipedia.org/wiki/San_Juan_del_Río_(Querétaro)"
+   ]
+  },
+  {
+   "id": "la-parroquia",
+   "nombre": "Parroquia de San Juan Bautista",
+   "detalle": "Su construcción empezó en 1693 y se consagró el 25 de julio de 1729 a San Juan Bautista, santo patrono de la ciudad.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": -221,
+   "v": -177,
+   "fuentes": [
+    "https://lugares.inah.gob.mx/es/node/4812",
+    "https://es.wikipedia.org/wiki/San_Juan_del_Río_(Querétaro)"
+   ]
+  },
+  {
+   "id": "santuario-de-guadalupe",
+   "nombre": "Santuario de Nuestra Señora de Guadalupe",
+   "detalle": "Fue la antigua parroquia de los españoles, bajo el patrocinio de la Virgen de Guadalupe. Su historia arranca en mayo de 1689.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": -104,
+   "v": -208,
+   "fuentes": [
+    "https://www.ciudadespatrimonio.mx/conjunto-parroquial/",
+    "https://lugares.inah.gob.mx/es/node/4812"
+   ]
+  },
+  {
+   "id": "templo-del-sacromonte",
+   "nombre": "Templo del Sacromonte",
+   "detalle": "Nació en 1817, cuando un arriero trajo de Amecameca una estampa del Señor del Sacromonte y con su hermana hizo de su casa una capilla. El templo actual se bendijo en 1831.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": 1068,
+   "v": 274,
+   "fuentes": [
+    "https://lugares.inah.gob.mx/es/node/4812",
+    "https://es.wikipedia.org/wiki/San_Juan_del_Río_(Querétaro)"
+   ]
+  },
+  {
+   "id": "templo-de-santo-domingo",
+   "nombre": "Templo de Santo Domingo",
+   "detalle": "Convento dominico fundado en 1690 y consagrado en 1734. En 1823 resguardó una noche los restos de Hidalgo, Allende y otros héroes de la Independencia.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": -236,
+   "v": 864,
+   "fuentes": [
+    "https://lugares.inah.gob.mx/es/node/4812",
+    "https://es.wikipedia.org/wiki/San_Juan_del_Río_(Querétaro)"
+   ]
+  },
+  {
+   "id": "templo-de-el-calvario",
+   "nombre": "Templo de El Calvario",
+   "detalle": "Está en el antiguo barrio de indios, a las afueras del pueblo virreinal. Su capilla actual sería de inicios del siglo XVIII; aquí llegaban las procesiones de Semana Santa.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": 1721,
+   "v": 828,
+   "fuentes": [
+    "https://lugares.inah.gob.mx/es/node/4812"
+   ]
+  },
+  {
+   "id": "templo-de-el-beaterio-de-hermanas-terceras-de-san-francisco",
+   "nombre": "Templo de El Beaterio de Hermanas Terceras de San Francisco",
+   "detalle": "Viene del Beaterio de Nuestra Señora de los Dolores, fundado en 1670 como la primera escuela formal para niñas de la ciudad, a cargo de terceras franciscanas.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": -751,
+   "v": 1337,
+   "fuentes": [
+    "https://es.wikipedia.org/wiki/San_Juan_del_Río_(Querétaro)",
+    "https://lugares.inah.gob.mx/es/node/4812"
+   ]
+  },
+  {
+   "id": "templo-de-jesucito-de-la-porteria",
+   "nombre": "Templo de Jesucito de la Portería",
+   "detalle": "Fue el hospital de la Orden de San Juan de Dios, inaugurado en 1672. Su nombre viene de la imagen de Jesús que quedó plasmada en su portería.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": -1517,
+   "v": 2141,
+   "fuentes": [
+    "https://lugares.inah.gob.mx/es/node/4812",
+    "https://www.zonaturistica.com/que-hacer-en/queretaro/san-juan-del-rio/templo-de-jesusito-de-la-porteria"
+   ]
+  },
+  {
+   "id": "mercado-juarez",
+   "nombre": "Mercado Juárez",
+   "detalle": "Mercado municipal que data de los años ochenta. Se remodeló a fondo en 2022 y en 2025 se rehabilitaron su estacionamiento y accesos.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": 3339,
+   "v": -321,
+   "fuentes": [
+    "https://plazadearmas.com.mx/?p=152696",
+    "https://www.cronicaregional.com.mx/san-juan-del-rio/mercado-juarez-de-san-juan-del-rio-registra-48-de-avance-en-rehabilitacion/"
+   ]
+  },
+  {
+   "id": "puente-de-la-historia",
+   "nombre": "Puente de la Historia",
+   "detalle": "Pedro de Arrieta lo construyó entre 1710 y 1711 para que las crecidas del río no cortaran el Camino Real. Durante siglos se llamó Puente de Piedra.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": -2742,
+   "v": 2691,
+   "fuentes": [
+    "https://lugares.inah.gob.mx/es/node/4812",
+    "https://www.ciudadespatrimonio.mx/puente-de-la-historia/"
+   ]
+  },
+  {
+   "id": "cerro-de-la-cruz",
+   "nombre": "Cerro de la Cruz",
+   "detalle": "Cerro con la Cruz central. Antiguamente se llamaba Cerro de Texco; hoy también se le conoce como Cerro de la Venta.",
+   "grupo": "centro",
+   "nombre_zona": "Centro histórico",
+   "u": -4732,
+   "v": 4846,
+   "fuentes": [
+    "https://revistainclusiones.org/index.php/inclu/article/view/3545/3753"
+   ]
+  },
+  {
+   "id": "piramide-del-cerrito",
+   "nombre": "Pirámide del Cerrito",
+   "detalle": "Centro ceremonial fundado hacia el 500 a.C. por gente ligada a la cultura Chupícuaro. Su basamento piramidal, de unos 8 m, lo corona un calvario a la Santa Cruz del siglo XVII.",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 1676,
+   "v": 3162,
+   "fuentes": [
+    "https://dialnet.unirioja.es/descarga/articulo/1261848.pdf",
+    "https://revistainclusiones.org/index.php/inclu/article/view/3545/3753"
+   ]
+  },
+  {
+   "id": "templo-del-seminario-xaveriano",
+   "nombre": "Templo del Seminario Xaveriano",
+   "detalle": "Templo del seminario menor de los Misioneros Xaverianos, que llegaron a México en 1951; aquí cursan secundaria y preparatoria jóvenes que aspiran a ser misioneros.",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 1720,
+   "v": 2160,
+   "fuentes": [
+    "https://archive.xaverianmissionaries.org/M_Life/WorldPlaces/Americas/Mex_Pres.htm"
+   ]
+  },
+  {
+   "id": "iglesia-de-san-isidro-labrador",
+   "nombre": "Iglesia de San Isidro Labrador",
+   "detalle": "Templo católico · a 2,2 km al norte de la Plaza Independencia",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": -4661,
+   "v": -3792,
+   "fuentes": []
+  },
+  {
+   "id": "nueva-iglesia-de-santa-cruz-nieto",
+   "nombre": "Nueva Iglesia de Santa Cruz Nieto",
+   "detalle": "Templo católico · a 3,2 km al noreste de la Plaza Independencia",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 2963,
+   "v": -6324,
+   "fuentes": []
+  },
+  {
+   "id": "santa-maria-de-guadalupe",
+   "nombre": "Templo de Santa María de Guadalupe",
+   "detalle": "Templo · a 4,4 km al este de la Plaza Independencia",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 9852,
+   "v": -7258,
+   "fuentes": []
+  },
+  {
+   "id": "mercado-oriente",
+   "nombre": "Mercado Oriente",
+   "detalle": "Mercado · a 2,7 km al este de la Plaza Independencia",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 7369,
+   "v": -4080,
+   "fuentes": []
+  },
+  {
+   "id": "universidad-autonoma-de-queretaro",
+   "nombre": "Universidad Autónoma de Querétaro",
+   "detalle": "Fundado el 3 de octubre de 1983, fue el primer campus de la UAQ fuera de la capital del estado. En 1987 ya tenía Derecho, Contaduría y Administración, e Ingeniería.",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 7147,
+   "v": -3572,
+   "fuentes": [
+    "https://campus.uaq.mx/index.php/conocenos-san-juan-del-rio",
+    "https://noticias.uaq.mx/index.php/41-uncategorised/6487-uaq-san-juan-del-rio-celebra-42-anos-como-referente-educativo-y-motor-de-desarrollo-regional"
+   ]
+  },
+  {
+   "id": "ut-san-juan-del-rio",
+   "nombre": "UT San Juan del Río",
+   "detalle": "La propia universidad marca 1998 como su fundación; el decreto estatal que la creó como organismo público descentralizado se emitió el 27 de abril de 1999.",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 2929,
+   "v": 5077,
+   "fuentes": [
+    "https://www.utsjr.edu.mx/datos_institucionales.php",
+    "https://cuentapublica2024.queretaro.gob.mx/sites/default/files/CUENTA_PUBLICA/TOMO%20VII/PARAESTATALES-NE-NF/UTSJR/notas_a_los_estados_financierosUTSJR.pdf"
+   ]
+  },
+  {
+   "id": "instituto-tecnologico-de-san-juan-del-rio",
+   "nombre": "Instituto Tecnológico de San Juan del Río",
+   "detalle": "Abrió el 3 de octubre de 1988 con 66 alumnos de Ingeniería Industrial, en aulas del CBTis 145. En 1991 estrenó campus propio en un predio de 20 hectáreas.",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 8170,
+   "v": 515,
+   "fuentes": [
+    "https://sjuanrio.tecnm.mx/nuestrainstitucion/",
+    "https://www.unirank.org/mx/uni/technological-institute-of-san-juan-del-rio/"
+   ]
+  },
+  {
+   "id": "cbtis-no-145",
+   "nombre": "CBTis No. 145",
+   "detalle": "Bachillerato tecnológico industrial y de servicios. En 1988 prestó sus aulas para las primeras clases del Instituto Tecnológico de San Juan del Río.",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 6758,
+   "v": 817,
+   "fuentes": [
+    "https://sjuanrio.tecnm.mx/nuestrainstitucion/"
+   ]
+  },
+  {
+   "id": "imss-hospital-general-de-zona-3",
+   "nombre": "IMSS Hospital General de Zona 3",
+   "detalle": "Hospital · a 1,7 km al sureste de la Plaza Independencia",
+   "grupo": "ciudad",
+   "nombre_zona": "Ciudad",
+   "u": 6615,
+   "v": 500,
+   "fuentes": []
+  }
+ ]
+}

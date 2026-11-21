@@ -157,6 +157,36 @@
       #fin-menu span { display: none; }
       #copiado:empty { display: none; }
     }
+    /* D-81: todo «píldora», igual que el mapa: botones en píldora o círculo, tarjetas y opciones muy redondeadas */
+    .btn, #pista, .chip { border-radius: 999px; }
+    .tarjeta, .modo-b { border-radius: 22px; }
+    .nivel { border-radius: 999px; padding-left: 18px; }
+    #chico { border-radius: 22px; }
+    #chico.ubicar { border-radius: 0 22px 0 0; }
+    /* D-82: el nivel elegido se marca solo con su pedacito de color (no toda la píldora), sin «SANJUANENSE»; leyenda chica en 2 renglones
+       debajo de los modos */
+    .nivel { padding: 10px 12px 10px 26px; }
+    .nivel::before { width: 12px; border-right-width: 2px; }
+    .nivel .t { font-size: 16px; letter-spacing: 0; color: var(--texto2); }
+    .nivel[aria-pressed="true"] { background: var(--crema); transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--tinta); }
+    .nivel[aria-pressed="true"]::before { width: 18px; }
+    .nivel[aria-pressed="true"] .t { color: var(--tinta); }
+    .leyenda { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; font-size: 10px; line-height: 1.3; margin: 10px 0 0; }
+    .leyenda span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .leyenda i { width: 8px; height: 8px; margin-right: 4px; vertical-align: 0; }
+    .niveles { margin-bottom: 14px; }
+    @media (max-width: 700px) { .nivel .t { font-size: 14px; } .nivel { padding: 9px 10px 9px 24px; } .leyenda { font-size: 9.5px; gap: 2px 6px; } }
+    /* D-82: teléfono acostado: menú compacto para que quepa sin desplazarse (niveles en una fila, modos sin icono, sin teclas) */
+    @media (max-height: 500px) {
+      .modal { padding: 12px 16px; max-height: calc(100vh - 16px); }
+      .modal h1 { font-size: 20px; margin: 0; }
+      .modal .intro, .teclas, .nota-maqueta, .modo-b svg { display: none; }
+      .niveles { grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 10px; }
+      .nivel { padding: 7px 8px 7px 22px; } .nivel .t { font-size: 13px; white-space: nowrap; }
+      .modos { gap: 10px; }
+      .modo-b { padding: 8px 14px; } .modo-b b { font-size: 16px; margin: 0 0 2px; } .modo-b span { font-size: 12px; }
+      .leyenda { grid-template-columns: 1fr 1fr; gap: 1px 12px; margin-top: 8px; }
+    }
   </style>
 </head>
 <body>
@@ -211,16 +241,10 @@
       <h1>Jugar</h1>
       <p class="intro">Dos juegos sobre San Juan del Río en miniatura. Cinco rondas cada uno, hasta 5 000 puntos por ronda.</p>
       <div class="niveles" id="niveles">
-        <button class="nivel" data-nivel="V0" style="--c: var(--v0)" aria-pressed="true"><div class="t">SANJUANENSE<sup>V0</sup></div><div class="s">Turista</div></button>
-        <button class="nivel" data-nivel="V1" style="--c: var(--v1)" aria-pressed="false"><div class="t">SANJUANENSE<sup>V1</sup></div><div class="s">Vecino</div></button>
-        <button class="nivel" data-nivel="V2" style="--c: var(--v2)" aria-pressed="false"><div class="t">SANJUANENSE<sup>V2</sup></div><div class="s">Adoptado</div></button>
-        <button class="nivel" data-nivel="V3" style="--c: var(--v3)" aria-pressed="false"><div class="t">SANJUANENSE<sup>V3</sup></div><div class="s">De toda la vida</div></button>
-      </div>
-      <div class="leyenda">
-        <span style="--c: var(--v0)"><i></i>Verde: lo más conocido del centro</span>
-        <span style="--c: var(--v1)"><i></i>Azul: lo más conocido del resto de la ciudad</span>
-        <span style="--c: var(--v2)"><i></i>Ámbar: lugares que conoce mucha gente</span>
-        <span style="--c: var(--v3)"><i></i>Rojo: lugares que solo ubica la gente de la zona</span>
+        <button class="nivel" data-nivel="V0" style="--c: var(--v0)" aria-pressed="true"><div class="t">Turista</div></button>
+        <button class="nivel" data-nivel="V1" style="--c: var(--v1)" aria-pressed="false"><div class="t">Vecino</div></button>
+        <button class="nivel" data-nivel="V2" style="--c: var(--v2)" aria-pressed="false"><div class="t">Adoptado</div></button>
+        <button class="nivel" data-nivel="V3" style="--c: var(--v3)" aria-pressed="false"><div class="t">De toda la vida</div></button>
       </div>
       <div class="modos">
         <button class="modo-b" data-modo="caer">
@@ -231,6 +255,12 @@
           <svg viewBox="0 0 34 34" fill="none" stroke="var(--tinta)" stroke-width="2.6"><circle cx="14" cy="14" r="9" fill="var(--acento)"/><path d="M21 21l9 9" stroke-linecap="round"/></svg>
           <b>Encuéntralo</b><span>Te damos un lugar. Búscalo en el mapa y pon tu pin: sin nombres ni buscador.</span>
         </button>
+      </div>
+      <div class="leyenda">
+        <span style="--c: var(--v0)"><i></i>Verde: lo famoso del centro</span>
+        <span style="--c: var(--v1)"><i></i>Azul: lo famoso de la ciudad</span>
+        <span style="--c: var(--v2)"><i></i>Ámbar: lo que muchos conocen</span>
+        <span style="--c: var(--v3)"><i></i>Rojo: solo la gente de la zona</span>
       </div>
       <div class="teclas"><span class="tecla">Espacio</span> adivinar y siguiente ronda · <span class="tecla">M</span> mapa grande · <span class="tecla">Esc</span> salir</div>
       <div class="nota-maqueta" id="nota-catalogo">Los dos modos sacan 5 lugares al azar del nivel que elijas, sin repetir hasta agotarlos. Lugares de OpenStreetMap, ordenados por qué tan conocidos son.</div>

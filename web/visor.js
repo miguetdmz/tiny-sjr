@@ -12,9 +12,12 @@ const zonas = (await Promise.all(ZONAS.map(async (id) => ({ id, rej: await leer(
   .filter((z) => z.rej && z.lug);
 const T = zonas[0].rej.tamano_px;
 const rej = { teselas: [...new Map(zonas.flatMap((z) => z.rej.teselas).map((t) => [`${t.i}_${t.j}`, t])).values()] };
-const lug = { lugares: zonas.flatMap((z) => z.lug.lugares.map((l) => ({ ...l, zona: z.id, nombre_zona: z.lug.nombre_zona ?? z.id }))) };
-// D-34: grupo "Cerros" al final (web/lugares-cerros.json, de scripts/26-pines-cerros.mjs)
-const cerros = await leer(new URL('lugares-cerros.json', import.meta.url));
+// D-80: «Lugares» = los 22 lugares con dibujo propio (web/lugares-atractivos.json, scripts/49); si falta, los pines por zona (D-34)
+const atractivos = await leer(new URL('lugares-atractivos.json', import.meta.url));
+const lug = atractivos
+  ? { lugares: atractivos.lugares.map((l) => ({ ...l, zona: l.grupo })) }
+  : { lugares: zonas.flatMap((z) => z.lug.lugares.map((l) => ({ ...l, zona: z.id, nombre_zona: z.lug.nombre_zona ?? z.id }))) };
+const cerros = atractivos ? null : await leer(new URL('lugares-cerros.json', import.meta.url));
 if (cerros) lug.lugares.push(...cerros.lugares.map((l) => ({ ...l, zona: 'cerros', nombre_zona: cerros.nombre_zona })));
 // Catálogo del juego (D-29), para el buscador y la brújula
 const catalogo = await leer(new URL('juego-lugares.json', import.meta.url));
@@ -128,7 +131,7 @@ const pines = lug.lugares.map((l, k) => {
   el.className = 'pin';
   el.innerHTML = `<button aria-label="${l.nombre}"><svg viewBox="0 0 26 34"><path d="M13 33C13 33 1 19.5 1 12.5a12 12 0 0 1 24 0C25 19.5 13 33 13 33Z" fill="#e8c15a" stroke="#1e2a33" stroke-width="1.5"/></svg><span class="num">${k + 1}</span></button>`;
   const btn = el.querySelector('button');
-  btn.addEventListener('click', (e) => { e.stopPropagation(); mostrar(k); });
+  btn.addEventListener('click', (e) => { e.stopPropagation(); mostrar(k); centrarEn(l.u, l.v, false); });
   btn.addEventListener('pointerdown', (e) => e.stopPropagation());
   capaPines.appendChild(el);
   if (k === 0 || lug.lugares[k - 1].zona !== l.zona) {
@@ -156,6 +159,9 @@ let buscado = null;
 function abrirFicha(nombre, detalle) {
   document.getElementById('f-nombre').textContent = nombre;
   document.getElementById('f-detalle').textContent = detalle ?? '';
+  // D-80: la letra se ajusta al largo de la descripción (corta: más grande; larga: más chica)
+  const n = (detalle ?? '').length;
+  ficha.classList.remove('corta', 'media', 'larga'); ficha.classList.add(n <= 100 ? 'corta' : n <= 150 ? 'media' : 'larga');
   ficha.style.display = 'block';
 }
 function mostrar(k) {
@@ -165,13 +171,18 @@ function mostrar(k) {
   pedirDibujo();
 }
 document.getElementById('cerrar').onclick = () => { ficha.style.display = 'none'; buscado = null; pines.forEach((p) => p.el.classList.remove('activo')); pedirDibujo(); };
-/** Lleva el punto (u, v) al espacio libre: debajo de la barra de arriba y arriba de la ficha */
-function centrarEn(u, v) {
-  const z = Math.max(vista.zoom, 1.5);
-  const arriba = Math.max(document.getElementById('marca').getBoundingClientRect().bottom, document.getElementById('barra').getBoundingClientRect().bottom) + 10;
-  const abajo = (ficha.style.display === 'block' ? ficha.getBoundingClientRect().top : innerHeight - 90) - 10;
-  const libreY = (arriba + abajo) / 2 + 17; // el pin mide ~34 px hacia arriba
-  irA(u, v - (libreY - innerHeight / 2) / z, z);
+/** Lleva el punto (u, v) al centro del espacio libre: debajo de la barra, arriba de la ficha (o a su derecha con el teléfono
+ *  acostado, D-80) y a la izquierda de los controles. acercar = false conserva el zoom (al tocar un pin en el mapa). */
+const ZOOM_LUGAR = 1.5, ZOOM_LUGAR_TEL = 0.6; // D-81: distancia de la imagen de referencia (en el teléfono 1,5 se veía demasiado cerca)
+function centrarEn(u, v, acercar = true) {
+  const tel = matchMedia('(max-width: 700px), (max-height: 500px)').matches, acostado = matchMedia('(max-height: 500px)').matches;
+  const z = acercar ? Math.max(vista.zoom, tel ? ZOOM_LUGAR_TEL : ZOOM_LUGAR) : vista.zoom;
+  const r = (id) => document.getElementById(id).getBoundingClientRect(), conFicha = ficha.style.display === 'block';
+  const arriba = Math.max(r('marca').bottom, r('barra').bottom) + 10;
+  const abajo = (conFicha && !acostado ? r('ficha').top : r('b-lugares').top) - 10;
+  const izq = conFicha && acostado ? r('ficha').right + 10 : 10, der = r('controles').left - 10;
+  const cx = (izq + der) / 2, cy = (arriba + abajo) / 2 + 17; // el pin mide ~34 px hacia arriba
+  irA(u - (cx - innerWidth / 2) / z, v - (cy - innerHeight / 2) / z, z);
 }
 
 function irA(u, v, zoom = vista.zoom) { Object.assign(vista, { u, v, zoom: clamp(zoom, ZMIN, ZMAX) }); pedirDibujo(); }
@@ -184,7 +195,8 @@ function zoomEn(px, py, factor) {
 
 // Vista inicial: D-37 la ciudad completa (botón casita); D-42 al abrir, acercada a los lugares con pin, en el espacio libre
 // entre la barra de arriba y el botón Lugares (y a la derecha del mapa chico en la compu)
-const cercanos = lug.lugares.filter((l) => Math.hypot(l.u, l.v) <= PINES_RADIO);
+// D-80: con los lugares atractivos, la vista inicial encuadra el grupo «Centro histórico» (de la Cruz al Puente y la Plaza)
+const cercanos = lug.lugares.filter((l) => (atractivos ? l.zona === 'centro' : Math.hypot(l.u, l.v) <= PINES_RADIO));
 const cajaPines = { u0: Math.min(...cercanos.map((l) => l.u)) - 300, u1: Math.max(...cercanos.map((l) => l.u)) + 300,
   v0: Math.min(...cercanos.map((l) => l.v)) - 450, v1: Math.max(...cercanos.map((l) => l.v)) + 150 }; // el pin sobresale ~34 px hacia arriba
 let modoInicial = 'pines';

@@ -74,7 +74,7 @@
   },
   {
    "id": "instituto-tecnologico-de-san-juan-del-rio",
-   "nombre": "Instituto Tecnologico De San Juan Del Rio",
+   "nombre": "Instituto Tecnológico de San Juan del Río",
    "tipo": "escuela",
    "nivel": "V0",
    "estado": "POR CONFIRMAR",
@@ -1290,7 +1290,7 @@
   },
   {
    "id": "templo-de-jesucito-de-la-porteria",
-   "nombre": "Templo de Jesucito de la Porteria",
+   "nombre": "Templo de Jesucito de la Portería",
    "tipo": "templo",
    "nivel": "V1",
    "estado": "POR CONFIRMAR",
@@ -1404,7 +1404,7 @@
   },
   {
    "id": "santa-maria-de-guadalupe",
-   "nombre": "Santa Maria de Guadalupe",
+   "nombre": "Templo de Santa María de Guadalupe",
    "tipo": "templo",
    "nivel": "V1",
    "estado": "POR CONFIRMAR",

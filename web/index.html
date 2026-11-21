@@ -72,6 +72,14 @@
 
     #ficha { position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%); width: min(420px, calc(100vw - 24px)); padding: 10px 14px; font-size: 14px; line-height: 1.4; display: none; }
     #ficha b { font-size: 16px; }
+    /* D-80: ficha más chica y letra según el largo de la descripción (nombre en negritas) */
+    #ficha { width: min(380px, calc(100vw - 24px)); line-height: 1.38; }
+    #ficha.corta { font-size: 15px; } #ficha.media { font-size: 14px; } #ficha.larga { font-size: 13px; }
+    @media (max-width: 700px), (max-height: 500px) {
+      #ficha { padding: 8px 12px; line-height: 1.32; }
+      #ficha b { font-size: 15px; }
+      #ficha.corta { font-size: 14px; } #ficha.media { font-size: 13px; } #ficha.larga { font-size: 12px; }
+    }
     #ficha button { float: right; margin-left: 8px; background: none; border: 0; color: var(--tinta); font-size: 20px; cursor: pointer; }
 
     #info { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: grid; place-items: center; padding: 16px; }
@@ -119,7 +127,8 @@
       #b-lugares { bottom: 16px; }
       #panel { bottom: 66px; }
       #panel ol { max-height: 52vh; }
-      #ficha { bottom: 66px; }
+      /* D-80: acostado, la ficha va a la izquierda para que el lugar quede a la vista en el centro del espacio libre */
+      #ficha { left: 10px; top: 62px; bottom: auto; transform: none; width: min(320px, 40vw); max-height: calc(100vh - 140px); overflow-y: auto; }
       #creditos { font-size: 9px; }
     }
     /* D-78: en el teléfono (de pie o acostado) el mapa chico se abre con el botón «Mapa», del mismo color que Jugar */
@@ -131,6 +140,15 @@
     }
     @media (max-height: 500px) { #b-mapa { bottom: 16px; } #chico { bottom: 66px; height: min(150px, 42vh); } }
     .solo-tel { display: none !important; }
+    /* D-81: todo «píldora»: botones en píldora o círculo, tarjetas con esquinas muy redondeadas */
+    .btn, #resultados li { border-radius: 999px; }
+    .btn { padding: 0 18px; } .btn.cuadro { padding: 0; }
+    .tarjeta { border-radius: 22px; }
+    #marca { border-radius: 999px; padding-left: 14px; padding-right: 22px; }
+    #buscador { border-radius: 24px; }
+    #buscador label { padding: 0 18px; }
+    #chico { border-radius: 0 22px 0 0; }
+    @media (max-width: 700px), (max-height: 500px) { #chico { border-radius: 22px; } }
   </style>
 </head>
 <body>

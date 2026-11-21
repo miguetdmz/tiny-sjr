@@ -231,8 +231,8 @@ function empezar(modo) {
   mostrar('menu', false); mostrar('final', false);
   $('b-modo').textContent = MODOS[modo];
   // En la barra solo el nivel (cabe en el teléfono); la leyenda va de título y en la pantalla final
-  $('b-nivel').textContent = `SANJUANENSE ${J.nivel}`; $('b-nivel').title = NIVELES[J.nivel].leyenda;
-  $('fin-nivel').textContent = `SANJUANENSE ${J.nivel} · ${NIVELES[J.nivel].leyenda.toUpperCase()}`;
+  $('b-nivel').textContent = NIVELES[J.nivel].leyenda; $('b-nivel').title = `Nivel ${J.nivel}`; // D-82: sin «SANJUANENSE»
+  $('fin-nivel').textContent = `NIVEL ${NIVELES[J.nivel].leyenda.toUpperCase()}`;
   ronda();
 }
 function actualizarBarra() {
@@ -348,7 +348,7 @@ function final() {
 /** Texto para compartir (sin servidor): modo, nivel, un cuadrito de color por ronda, total y el enlace al juego en ese nivel */
 function textoCompartir() {
   const enlace = new URL(`juego.html?nivel=${J.nivel}`, location.href).href;
-  return `Tiny San Juan del Río · ${MODOS[J.modo]}\nSANJUANENSE ${J.nivel} (${NIVELES[J.nivel].leyenda})\n`
+  return `Tiny San Juan del Río · ${MODOS[J.modo]}\nNivel ${NIVELES[J.nivel].leyenda}\n`
     + `${J.puntos.map((p) => CUADROS[rango(p)]).join('')} ${fmt(total())} / ${fmt(MAX * RONDAS)}\n¿Me ganas? ${enlace}`;
 }
 $('adivinar').onclick = adivinar;
