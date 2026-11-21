@@ -24,6 +24,9 @@ export async function cargarDatos() {
     u0: Math.min(...ij.map((p) => p[0])) * T - T / 2, u1: (Math.max(...ij.map((p) => p[0])) + 1) * T - T / 2,
     v0: Math.min(...ij.map((p) => p[1])) * T - T / 2, v1: (Math.max(...ij.map((p) => p[1])) + 1) * T - T / 2,
   };
+  // D-61: capa pintada (scripts/47); ?capa=maqueta la apaga
+  const pirPintado = new URLSearchParams(location.search).get('capa') === 'maqueta' ? null : await leer(new URL('tiles/pintado/piramide.json', BASE));
+  const enPintado = Object.fromEntries(Object.entries(pirPintado?.teselas ?? {}).map(([k, v]) => [k, new Set(v)]));
   const cam = camaraFija(cfg);
   // Suelo <-> pantalla. Con relieve (Fase 3c) el punto del mundo es [x, h(x, n), -n] (src/rejilla.js), con h del
   // relieve de la ciudad (scripts/21-relieve-ciudad.mjs). Apagado o sin archivo: el suelo es plano (h = 0), como en J0.
@@ -51,7 +54,7 @@ export async function cargarDatos() {
     }
     return enPlano(u, v, 0);
   };
-  return { cfg, T, NIV, existen, caja, cam, sueloAPantalla, pantallaASuelo, altura, BASE };
+  return { cfg, T, NIV, existen, enPintado, caja, cam, sueloAPantalla, pantallaASuelo, altura, BASE };
 }
 
 /**
@@ -62,7 +65,7 @@ export async function cargarDatos() {
  *   zmax                    zoom máximo (por omisión 6)
  */
 export function crearMapa(datos, contenedor, opciones = {}) {
-  const { T, NIV, existen, caja, BASE: base } = datos;
+  const { T, NIV, existen, enPintado = {}, caja, BASE: base } = datos;
   const lienzo = document.createElement('canvas');
   lienzo.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
   contenedor.appendChild(lienzo);
@@ -83,7 +86,8 @@ export function crearMapa(datos, contenedor, opciones = {}) {
     if (!pedir) return null;
     img = new Image();
     img.onload = () => pedirDibujo();
-    img.src = new URL(k === 0 ? `tiles/nativo/${i}_${j}.webp` : `tiles/nivel-${k}/${i}_${j}.webp`, base).href;
+    const c = enPintado[k]?.has(`${i}_${j}`) ? 'tiles/pintado/' : 'tiles/';
+    img.src = new URL(k === 0 ? `${c}nativo/${i}_${j}.webp` : `${c}nivel-${k}/${i}_${j}.webp`, base).href;
     imagenes.set(clave, img);
     return img;
   }

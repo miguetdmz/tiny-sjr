@@ -43,6 +43,13 @@ const caja = (() => { const is = rej.teselas.map((t) => t.i), js = rej.teselas.m
 const calcularZmin = () => { if (innerWidth && innerHeight) ZMIN = Math.min(0.015, 0.6 * Math.min(innerWidth / (caja.u1 - caja.u0), innerHeight / (caja.v1 - caja.v0))); };
 calcularZmin();
 const existen = [new Set(rej.teselas.map((t) => `${t.i}_${t.j}`)), ...Array.from({ length: NIV }, (_, k) => new Set(pir.teselas[k + 1]))];
+// D-61: capa pintada (scripts/47-teselas-pintadas.py). Donde hay tesela pintada se usa; donde no, la maqueta. ?capa=maqueta la apaga.
+const CAPA_MAQUETA = new URLSearchParams(location.search).get('capa') === 'maqueta';
+const pirPintado = CAPA_MAQUETA ? null : await leer(new URL('tiles/pintado/piramide.json', BASE));
+const enPintado = Object.fromEntries(Object.entries(pirPintado?.teselas ?? {}).map(([k, v]) => [k, new Set(v)]));
+const rutaTesela = (k, i, j) => { const c = enPintado[k]?.has(`${i}_${j}`) ? 'tiles/pintado/' : 'tiles/'; return k === 0 ? `${c}nativo/${i}_${j}.webp` : `${c}nivel-${k}/${i}_${j}.webp`; };
+// D-61: cuadros del alcance que falta pintar (presupuesto, D-60), marcados encima del mapa
+const estadoPintado = CAPA_MAQUETA ? null : await leer(new URL('pintado-estado.json', import.meta.url));
 const imagenes = new Map(); // "k/i_j" -> Image (el orden del Map sirve para olvidar las más viejas)
 function imagen(k, i, j, pedir = true) {
   const clave = `${k}/${i}_${j}`;
@@ -51,7 +58,7 @@ function imagen(k, i, j, pedir = true) {
   if (!pedir) return null;
   img = new Image();
   img.onload = () => pedirDibujo();
-  img.src = new URL(k === 0 ? `tiles/nativo/${i}_${j}.webp` : `tiles/nivel-${k}/${i}_${j}.webp`, BASE).href;
+  img.src = new URL(rutaTesela(k, i, j), BASE).href;
   imagenes.set(clave, img);
   return img;
 }
@@ -85,6 +92,24 @@ function dibujar() {
     }
   }
   for (const [clave, img] of imagenes) { if (imagenes.size <= 250) break; imagenes.delete(clave); img.src = ''; } // olvidar las más viejas
+  // D-61: pendientes de pintar = velo oscuro + borde punteado; de cerca, la leyenda
+  if (estadoPintado) {
+    ctx.save();
+    ctx.setLineDash([8 * dpr, 6 * dpr]); ctx.lineWidth = 2 * dpr; ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.fillStyle = 'rgba(20,28,36,0.28)';
+    ctx.font = `600 ${13 * dpr}px system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (const p of estadoPintado.pendientes) {
+      const [u, v, L] = p.r;
+      if (u + L < u0 || u > u1 || v + L < v0 || v > v1) continue;
+      const [x0, y0, x1, y1] = caja(u, v, u + L, v + L);
+      ctx.fillRect(x0, y0, x1 - x0, y1 - y0); ctx.strokeRect(x0 + dpr, y0 + dpr, x1 - x0 - 2 * dpr, y1 - y0 - 2 * dpr);
+      if (x1 - x0 > 140 * dpr) {
+        const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, txt = 'Pendiente de pintar', tw = ctx.measureText(txt).width + 16 * dpr;
+        ctx.setLineDash([]); ctx.fillStyle = 'rgba(30,42,51,0.85)'; ctx.fillRect(cx - tw / 2, cy - 12 * dpr, tw, 24 * dpr);
+        ctx.fillStyle = '#f4ead2'; ctx.fillText(txt, cx, cy); ctx.fillStyle = 'rgba(20,28,36,0.28)'; ctx.setLineDash([8 * dpr, 6 * dpr]);
+      }
+    }
+    ctx.restore();
+  }
   // D-37: de lejos los pines del centro se enciman; aparecen al acercarse (el que está abierto, siempre)
   const verPines = vista.zoom >= zoomPines * 0.999;
   for (const p of pines) {
