@@ -54,6 +54,18 @@
     #chico { position: fixed; right: 10px; bottom: 80px; width: 340px; height: 250px; border-radius: 12px; overflow: hidden; background: #26343e; }
     #chico.ubicar { left: 0; right: auto; bottom: 0; width: 240px; height: 160px; border-left: 0; border-bottom: 0; border-radius: 0 12px 0 0; }
     #chico.abierto { width: min(70vw, 900px); height: 65vh; }
+    #chico-zoom { position: absolute; right: 8px; bottom: 8px; display: flex; flex-direction: column; gap: 6px; z-index: 1; }
+    #chico.ubicar #chico-zoom { display: none; }
+    /* D-90: en pantallas táctiles no hay teclado: sin atajos */
+    @media (max-width: 600px), (hover: none) and (pointer: coarse) { .tecla, .teclas { display: none; } }
+    /* D-90: teléfono acostado (bajo y ancho): el mapa para marcar va a la izquierda, sin encimarse con la barra; los botones del mapa grande
+       en fila debajo de la barra (la altura la pone juego.js) */
+    @media (max-height: 500px) and (min-width: 601px) {
+      #chico, #chico.abierto { left: 10px; right: auto; top: 10px; bottom: 80px; width: calc(100vw - 480px); height: auto; }
+      #chico.ubicar { top: auto; bottom: 0; left: 0; width: 240px; height: 160px; }
+      html #controles { flex-direction: row; transform: none; gap: 10px; }
+      html #controles .btn { width: 42px; height: 42px; }
+    }
     #chico .etiqueta { position: absolute; left: 8px; top: 8px; font-size: 12px; font-weight: 800; background: var(--crema); border: 2px solid var(--tinta); padding: 2px 8px; border-radius: 8px; pointer-events: none; z-index: 1; }
 
     /* Botones de zoom (columna derecha, como la portada) */
@@ -210,7 +222,8 @@
   </div>
 
   <button id="ver-mapa" class="btn acento oculto"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M10 18s-6-6-6-10a6 6 0 0 1 12 0c0 4-6 10-6 10z"/><circle cx="10" cy="8" r="2"/></svg>Mapa</button>
-  <div id="chico" class="tarjeta oculto"><span class="etiqueta" id="chico-etq">Toca dónde crees que estás</span></div>
+  <div id="chico" class="tarjeta oculto"><span class="etiqueta" id="chico-etq">Toca dónde crees que estás</span>
+    <div id="chico-zoom"><button class="btn chico cuadro" id="k-mas" aria-label="Acercar el mapa" title="Acercar"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button><button class="btn chico cuadro" id="k-menos" aria-label="Alejar el mapa" title="Alejar"><svg viewBox="0 0 20 20"><path d="M4 10h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button></div></div>
 
   <div id="controles" class="oculto">
     <button class="btn cuadro" id="c-mas" aria-label="Acercar" title="Acercar"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>

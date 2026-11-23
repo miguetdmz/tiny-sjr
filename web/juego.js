@@ -42,6 +42,37 @@ const TIPOS = { cerro: 'Cerro', comercio: 'Comercio', escuela: 'Escuela', estaci
   panteon: 'Panteón', servicio: 'Servicio', deporte: 'Deporte', esquina: 'Esquina', historico: 'Histórico', arqueologia: 'Zona arqueológica' };
 $('carga').classList.add('oculto');
 
+// ---------- Fase 1 del juego más fácil (D-90) ----------
+// Referencias con nombre en el mapa para marcar: lugares que todo sanjuanense ubica. Se omite la del lugar de la ronda.
+// arriba = la etiqueta va arriba del punto (para que no se encimen las que están juntas).
+const REFERENCIAS = [
+  ['plaza-independencia', 'Plaza Independencia', true], ['puente-de-la-historia', 'Puente de la Historia', false],
+  ['galerias-san-juan-del-rio', 'Galerías', true], ['cerro-de-la-cruz', 'Cerro de la Cruz', true],
+  ['piramide-del-cerrito', 'El Cerrito', false], ['universidad-autonoma-de-queretaro', 'UAQ', true],
+  ['cerro-gordo', 'Cerro Gordo', true], ['san-pedro-ahuacatlan', 'San Pedro Ahuacatlán', true],
+].map(([id, nombre, arriba]) => ({ ...catalogo.lugares.find((l) => l.id === id), corto: nombre, arriba })).filter((r) => r.u !== undefined);
+const MARGEN_ZONA_M = 150;   // aire alrededor de los lugares del nivel al encuadrar
+/** Zona del nivel: caja (u, v) de todos sus lugares más un margen. Ahí arrancan los dos mapas, en vez de toda la ciudad. */
+function zonaNivel(n) {
+  const ls = catalogo.lugares.filter((l) => l.nivel_juego === n), m = MARGEN_ZONA_M / datos.cam.mpp;
+  const us = ls.map((l) => l.u), vs = ls.map((l) => l.v);
+  return [Math.min(...us) - m, Math.min(...vs) - m, Math.max(...us) + m, Math.max(...vs) + m];
+}
+/** Punto y nombre de cada referencia (pastilla crema con borde de tinta) */
+function dibujarReferencias(ctx, P, dpr) {
+  ctx.save(); ctx.font = `800 ${11 * dpr}px ui-rounded, system-ui, sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+  for (const r of REFERENCIAS) {
+    if (J.lugar && r.id === J.lugar.id) continue;
+    const p = P(r.u, r.v), w = ctx.measureText(r.corto).width + 12 * dpr, h = 18 * dpr, y = r.arriba ? p.y - 16 * dpr : p.y + 16 * dpr;
+    ctx.beginPath(); ctx.arc(p.x, p.y, 4 * dpr, 0, 2 * Math.PI); ctx.fillStyle = '#1d1a16'; ctx.fill();
+    ctx.lineWidth = 1.5 * dpr; ctx.strokeStyle = '#fbf3e2'; ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(p.x - w / 2, y - h / 2, w, h, h / 2); ctx.fillStyle = 'rgba(251,243,226,.94)'; ctx.fill();
+    ctx.strokeStyle = '#1d1a16'; ctx.lineWidth = 1.5 * dpr; ctx.stroke();
+    ctx.fillStyle = '#1d1a16'; ctx.fillText(r.corto, p.x, y + 0.5 * dpr);
+  }
+  ctx.restore();
+}
+
 // ---------- Estado ----------
 const J = { nivel: 'V0', modo: 'caer', fase: 'menu', ronda: 0, orden: [], puntos: [], pin: null, pista: null, lugar: null, sonido: localStorage.getItem('tsjr-sonido') !== '0' };
 const suelo = (u, v) => datos.pantallaASuelo(u, v);
@@ -92,6 +123,7 @@ function dibujarCirculo(ctx, P, c, r, dpr) {
 const grande = crearMapa(datos, $('grande'), {
   alDibujar(ctx, P, dpr) {
     if (J.fase === 'jugando' && J.modo === 'encontrar') {
+      if (grande.vista.zoom < 0.35) dibujarReferencias(ctx, P, dpr); // de cerca ya se ve el mapa pintado
       if (J.pista) dibujarCirculo(ctx, P, J.pista, PISTA_RADIO_M, dpr);
       if (J.pin) dibujarPin(ctx, P(J.pin.u, J.pin.v), dpr);
     }
@@ -119,6 +151,7 @@ const grande = crearMapa(datos, $('grande'), {
 const chico = crearMapa(datos, $('chico'), {
   fondo: '#26343e',
   alDibujar(ctx, P, dpr) {
+    if (J.modo === 'caer' && J.fase === 'jugando') dibujarReferencias(ctx, P, dpr);
     if (J.modo === 'caer' && J.pista) dibujarCirculo(ctx, P, J.pista, PISTA_RADIO_M, dpr);
     if (J.modo === 'caer' && J.pin) dibujarPin(ctx, P(J.pin.u, J.pin.v), dpr * 0.8);
     if (J.modo === 'encontrar') { // recuadro de lo que se ve en el mapa grande
@@ -171,6 +204,7 @@ $('menu-cerrar').onclick = () => { location.href = './index.html'; };
 const esTel = () => innerWidth <= 600;
 function acomodar() {
   const jugando = J.fase === 'jugando', caer = J.modo === 'caer', tel = esTel();
+  const acostado = innerHeight <= 500 && !tel; // D-90: teléfono acostado (misma regla que el CSS)
   const chicoVisible = jugando && (caer ? !tel || J.mapaAbierto : !tel);
   mostrar('barra', jugando || J.fase === 'resultado');
   mostrar('chico', chicoVisible);
@@ -184,11 +218,13 @@ function acomodar() {
   mostrar('ayudas', jugando); mostrar('volver', jugando && caer);
   mostrar('indicacion', jugando && caer); mostrar('reto', J.modo === 'encontrar' && (jugando || J.fase === 'resultado'));
   mostrar('controles', jugando || J.fase === 'resultado');
-  for (const id of ['c-mas', 'c-menos', 'c-pantalla']) mostrar(id, !tel);
+  mostrar('c-pantalla', !tel);
+  if (tel && jugando && caer && J.mapaAbierto) mostrar('controles', false); // el mapa para marcar trae sus propios + y −
+  if (acostado && J.fase === 'resultado') mostrar('controles', false); // acostado no caben encima de la ficha del resultado
   mostrar('c-inicio', !(jugando && caer));
-  $('controles').style.top = tel ? `${$('barra').getBoundingClientRect().bottom + 10}px` : '';
+  $('controles').style.top = tel || acostado ? `${$('barra').getBoundingClientRect().bottom + 10}px` : '';
   // La primera vez que se ve el mapa chico en la ronda, se encuadra la ciudad entera
-  if (chicoVisible && !J.chicoListo) requestAnimationFrame(() => { chico.ciudad(); J.chicoListo = true; });
+  if (chicoVisible && !J.chicoListo) requestAnimationFrame(() => { if (caer) chico.encuadrar(...zonaNivel(J.nivel), 8); else chico.ciudad(); J.chicoListo = true; });
   grande.pedirDibujo(); chico.pedirDibujo();
 }
 addEventListener('resize', acomodar);
@@ -255,7 +291,7 @@ function ronda() {
     setTimeout(() => { mostrar('carga', false); tono(520); tono(780, 0.15, 0.1); }, 900);
   } else {
     $('r-nombre').textContent = J.lugar.nombre; $('r-desc').textContent = J.lugar.descripcion;
-    grande.rangoZoom(null, 6); grande.ciudad();
+    grande.rangoZoom(null, 6); grande.encuadrar(...zonaNivel(J.nivel), 20);
     chico.rangoZoom(null, 1);
   }
   acomodar();
@@ -367,7 +403,12 @@ $('fin-compartir').onclick = async () => {
 // Botones de zoom
 $('c-mas').onclick = () => grande.acercar(1.5);
 $('c-menos').onclick = () => grande.acercar(1 / 1.5);
-$('c-inicio').onclick = () => grande.ciudad();
+$('c-inicio').onclick = () => (J.fase === 'jugando' || J.fase === 'resultado' ? grande.encuadrar(...zonaNivel(J.nivel), 20) : grande.ciudad());
+// + y − del mapa para marcar (D-90). Sin esto, tocar el botón pondría el pin debajo de él.
+for (const [id, f] of [['k-mas', 1.5], ['k-menos', 1 / 1.5]]) {
+  $(id).addEventListener('pointerdown', (e) => e.stopPropagation());
+  $(id).onclick = () => chico.acercar(f);
+}
 $('c-pantalla').onclick = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.());
 
 // Teclado: Espacio adivina o pasa de ronda; Esc sale al menú
