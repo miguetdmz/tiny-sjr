@@ -73,6 +73,31 @@ function dibujarReferencias(ctx, P, dpr) {
   ctx.restore();
 }
 
+// ---------- Reto del día (D-92) ----------
+// Los mismos 5 lugares para todos el mismo día y nivel: se sacan con una semilla hecha de la fecha (hora del centro de México) y el
+// nivel, sin servidor. Modo ¿Dónde caí?. Una vez al día: el avance se guarda en el navegador después de cada ronda, así que salir y
+// volver sigue donde se quedó (no se puede volver a sortear).
+const hoy = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Mexico_City' }).format(new Date()); // AAAA-MM-DD
+const fechaCorta = (f) => { const [a, m, d] = f.split('-').map(Number); return `${d} ${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][m - 1]} ${a}`; };
+/** Número pseudoazar repetible a partir de un texto (mismo texto → misma serie en cualquier navegador) */
+function semilla(texto) {
+  let h = 1779033703 ^ texto.length;
+  for (let i = 0; i < texto.length; i++) { h = Math.imul(h ^ texto.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+  return () => { h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16; return (h >>> 0) / 4294967296; };
+}
+function lugaresDelReto(fecha, nivel) {
+  const azar = semilla(`tiny-sjr|${fecha}|${nivel}`);
+  const a = catalogo.lugares.filter((l) => l.nivel_juego === nivel).sort((x, y) => (x.id < y.id ? -1 : 1)); // orden fijo por id
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(azar() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a.slice(0, RONDAS);
+}
+const claveReto = (fecha, nivel) => `tsjr-reto-${fecha}-${nivel}`;
+function leerReto(fecha, nivel) { try { return JSON.parse(localStorage.getItem(claveReto(fecha, nivel))); } catch { return null; } }
+function guardarReto() {
+  const h = J.historial.map((x) => ({ id: x.lugar.id, pin: x.pin, d: x.d, pts: x.pts, pista: x.pista }));
+  try { localStorage.setItem(claveReto(J.reto, J.nivel), JSON.stringify({ historial: h })); } catch {}
+}
+
 // ---------- Estado ----------
 const J = { nivel: 'V0', modo: 'caer', fase: 'menu', ronda: 0, orden: [], puntos: [], pin: null, pista: null, lugar: null, sonido: localStorage.getItem('tsjr-sonido') !== '0' };
 const suelo = (u, v) => datos.pantallaASuelo(u, v);
@@ -193,10 +218,19 @@ function elegirNivel(n) {
   J.nivel = n;
   document.documentElement.style.setProperty('--nivel', `var(${NIVELES[n].color})`);
   for (const b of document.querySelectorAll('.nivel')) b.setAttribute('aria-pressed', String(b.dataset.nivel === n));
+  pintarReto();
 }
 for (const b of document.querySelectorAll('.nivel')) b.onclick = () => elegirNivel(b.dataset.nivel);
+/** Botón del Reto del día: fecha y, si ya se jugó hoy en este nivel, el total */
+function pintarReto() {
+  const f = hoy(), r = leerReto(f, J.nivel), n = r?.historial?.length ?? 0;
+  $('reto-fecha').textContent = fechaCorta(f);
+  $('reto-estado').textContent = n >= RONDAS ? `Ya lo jugaste hoy: ${fmt(r.historial.reduce((a, x) => a + x.pts, 0))} puntos · ver resultado`
+    : n ? `Vas en la ronda ${n + 1} de ${RONDAS} · seguir` : 'Los mismos 5 lugares para todos hoy. Una vez al día.';
+}
+$('reto-dia').onclick = () => empezarReto();
 // D-65: el número de lugares por nivel ya no se le muestra al jugador
-for (const b of document.querySelectorAll('.modo-b')) b.onclick = () => empezar(b.dataset.modo);
+for (const b of document.querySelectorAll('.modo-b[data-modo]')) b.onclick = () => empezar(b.dataset.modo);
 $('menu-cerrar').onclick = () => { location.href = './index.html'; };
 // ---------- Qué se ve (una sola regla para compu y teléfono) ----------
 // Teléfono, "¿Dónde caí?": el mapa chico no está siempre; el botón Mapa lo abre a casi toda la pantalla, con × y el pin abajo.
@@ -237,7 +271,7 @@ function abrirMenu() {
   J.fase = 'menu';
   for (const id of ['barra', 'chico', 'controles', 'accion', 'resultado', 'final', 'ver-mapa']) mostrar(id, false);
   grande.rangoZoom(null, 6);
-  mostrar('menu');
+  mostrar('menu'); pintarReto();
   grande.ciudad();
 }
 
@@ -261,15 +295,26 @@ function sacar(lista, n, clave) {
   try { localStorage.setItem(clave, JSON.stringify(bolsa)); } catch {}
   return fuera.map((id) => lista.find((l) => l.id === id));
 }
-function empezar(modo) {
-  J.modo = modo; J.ronda = 0; J.puntos = []; J.historial = [];
-  J.orden = sacar(catalogo.lugares.filter((l) => l.nivel_juego === J.nivel), RONDAS, `tsjr-bolsa-${modo}-${J.nivel}`);
+function empezar(modo, orden = null, reto = null) {
+  J.modo = modo; J.ronda = 0; J.puntos = []; J.historial = []; J.reto = reto;
+  J.orden = orden ?? sacar(catalogo.lugares.filter((l) => l.nivel_juego === J.nivel), RONDAS, `tsjr-bolsa-${modo}-${J.nivel}`);
   mostrar('menu', false); mostrar('final', false);
-  $('b-modo').textContent = MODOS[modo];
+  $('b-modo').textContent = reto ? 'Reto del día' : MODOS[modo];
   // En la barra solo el nivel (cabe en el teléfono); la leyenda va de título y en la pantalla final
   $('b-nivel').textContent = NIVELES[J.nivel].leyenda; $('b-nivel').title = `Nivel ${J.nivel}`; // D-82: sin «SANJUANENSE»
   $('fin-nivel').textContent = `NIVEL ${NIVELES[J.nivel].leyenda.toUpperCase()}`;
+  // Reto a medias: se retoma con sus rondas y puntos ya jugados
+  const previo = reto && leerReto(reto, J.nivel);
+  if (previo?.historial?.length) {
+    J.historial = previo.historial.map((x) => ({ ...x, lugar: J.orden.find((l) => l.id === x.id) })).filter((x) => x.lugar);
+    J.puntos = J.historial.map((x) => x.pts); J.ronda = J.historial.length;
+    if (J.ronda >= RONDAS) return final();
+  }
   ronda();
+}
+function empezarReto() {
+  const f = hoy();
+  empezar('caer', lugaresDelReto(f, J.nivel), f);
 }
 function actualizarBarra() {
   $('b-ronda').textContent = `${J.ronda + 1}/${RONDAS}`;
@@ -320,6 +365,7 @@ function adivinar() {
   let pts = puntaje(d, J.lugar.radio_m ?? 25, NIVELES[J.nivel].f);
   if (J.pista) pts = Math.max(0, pts - PISTA_COSTO);
   J.puntos.push(pts); J.historial.push({ pin: J.pin, lugar: J.lugar, d, pts, pista: !!J.pista }); J.fase = 'resultado';
+  if (J.reto) guardarReto();
   actualizarBarra(); $('b-ronda').textContent = `${J.ronda + 1}/${RONDAS}`;
   J.mapaAbierto = false; acomodar();
   // La vista se aleja y muestra tu pin, la banderita en el lugar real y la línea entre ambos
@@ -355,7 +401,9 @@ function final() {
   J.fase = 'final';
   acomodar(); mostrar('resultado', false);
   const t = total();
-  $('fin-titulo').textContent = MODOS[J.modo];
+  $('fin-titulo').textContent = J.reto ? `Reto del día · ${fechaCorta(J.reto)}` : MODOS[J.modo];
+  mostrar('fin-otra', !J.reto); // el reto es una vez al día
+  $('fin-manana').classList.toggle('oculto', !J.reto);
   $('fin-total').textContent = fmt(t);
   $('fin-de').textContent = `de ${fmt(MAX * RONDAS)} puntos`;
   $('fin-barra').style.width = `${(100 * t) / (MAX * RONDAS)}%`;
@@ -384,7 +432,8 @@ function final() {
 /** Texto para compartir (sin servidor): modo, nivel, un cuadrito de color por ronda, total y el enlace al juego en ese nivel */
 function textoCompartir() {
   const enlace = new URL(`juego.html?nivel=${J.nivel}`, location.href).href;
-  return `Tiny San Juan del Río · ${MODOS[J.modo]}\nNivel ${NIVELES[J.nivel].leyenda}\n`
+  const titulo = J.reto ? `Reto del día · ${fechaCorta(J.reto)}` : MODOS[J.modo];
+  return `Tiny San Juan del Río · ${titulo}\nNivel ${NIVELES[J.nivel].leyenda}\n`
     + `${J.puntos.map((p) => CUADROS[rango(p)]).join('')} ${fmt(total())} / ${fmt(MAX * RONDAS)}\n¿Me ganas? ${enlace}`;
 }
 $('adivinar').onclick = adivinar;
@@ -422,4 +471,4 @@ addEventListener('keydown', (e) => {
 const nivelURL = new URLSearchParams(location.search).get('nivel');
 elegirNivel(NIVELES[nivelURL] ? nivelURL : 'V0');
 abrirMenu();
-window.__juego = { J, grande, chico, datos, puntaje, catalogo, textoCompartir };
+window.__juego = { J, grande, chico, datos, puntaje, catalogo, textoCompartir, lugaresDelReto, hoy };
