@@ -428,6 +428,9 @@ function final() {
   verEntre(J.historial.flatMap((h) => [h.pin, h.lugar]),
     tel ? { x0: 0, x1: innerWidth, y0: 10, y1: c.top - 10 } : { x0: c.right + 10, x1: innerWidth - 10, y0: 10, y1: innerHeight - 10 });
   tono(523); tono(659, 0.12, 0.12); tono(784, 0.12, 0.24); tono(1047, 0.25, 0.36);
+  J.tarjeta = null; mostrar('fin-descargar', false);
+  encuadrarMapaT();
+  setTimeout(prepararTarjeta, 1500); setTimeout(prepararTarjeta, 4000); // otra vez cuando ya cargaron todas las teselas
 }
 /** Texto para compartir (sin servidor): modo, nivel, un cuadrito de color por ronda, total y el enlace al juego en ese nivel */
 function textoCompartir() {
@@ -436,6 +439,79 @@ function textoCompartir() {
   return `Tiny San Juan del Río · ${titulo}\nNivel ${NIVELES[J.nivel].leyenda}\n`
     + `${J.puntos.map((p) => CUADROS[rango(p)]).join('')} ${fmt(total())} / ${fmt(MAX * RONDAS)}\n¿Me ganas? ${enlace}`;
 }
+// ---------- Tarjeta para compartir como imagen (D-94, $0, sin servidor) ----------
+// Una imagen de 1 080 × 1 350 (formato vertical de redes) con el mapa de las 5 rondas, el total, el nivel y cada ronda.
+// Se prepara al llegar a la pantalla final (Safari solo deja compartir si se hace justo al tocar el botón, sin esperar);
+// a los 1,5 s y otra vez a los 4 s, cuando ya cargaron las teselas.
+const COLOR = { crema: '#fbf3e2', tinta: '#1d1a16', texto2: '#5b544a', r: ['#3a3530', '#d9534f', '#e8862f', '#f2c94c', '#3fae5a'] };
+function recortarTexto(ctx, t, ancho) {
+  if (ctx.measureText(t).width <= ancho) return t;
+  while (t.length > 1 && ctx.measureText(t + '…').width > ancho) t = t.slice(0, -1);
+  return t.trimEnd() + '…';
+}
+// Mapa propio de la tarjeta, fuera de la pantalla y del mismo tamaño que su recuadro (920 × 460): se ve igual en teléfono y compu,
+// sin depender de cómo quedó el mapa grande. Las marcas (líneas, banderas, números y pines) se dibujan después, a escala de la tarjeta.
+const MAPA_T = { w: 920, h: 460 };
+const cajaMapaT = document.createElement('div');
+cajaMapaT.style.cssText = `position:fixed;left:-10000px;top:0;width:${MAPA_T.w}px;height:${MAPA_T.h}px;pointer-events:none`;
+cajaMapaT.setAttribute('aria-hidden', 'true');
+document.body.append(cajaMapaT);
+const mapaT = crearMapa(datos, cajaMapaT, {});
+mapaT.rangoZoom(null, 2);
+mapaT.interactivo = false;
+function encuadrarMapaT() {
+  const pts = J.historial.flatMap((h) => [h.pin, h.lugar]), us = pts.map((p) => p.u), vs = pts.map((p) => p.v);
+  mapaT.encuadrar(Math.min(...us), Math.min(...vs), Math.max(...us), Math.max(...vs), 70);
+}
+// Dirección del sitio leída de la página al abrirse (no va escrita en el código: scripts/28 no deja datos personales en la copia pública)
+const DIRECCION = (() => { const u = new URL('../', location.href); return (u.host + u.pathname).replace(/\/$/, ''); })();
+function dibujarTarjeta() {
+  const c = document.createElement('canvas'); c.width = 1080; c.height = 1350;
+  const g = c.getContext('2d'), F = (peso, px) => `${peso} ${px}px ui-rounded, system-ui, -apple-system, sans-serif`;
+  const caja = (x, y, w, h, r, relleno, borde = 6) => { g.beginPath(); g.roundRect(x, y, w, h, r); g.fillStyle = relleno; g.fill(); g.lineWidth = borde; g.strokeStyle = COLOR.tinta; g.stroke(); };
+  g.fillStyle = '#1e2a33'; g.fillRect(0, 0, 1080, 1350);
+  caja(30, 30, 1020, 1290, 44, COLOR.crema);
+  const nivel = getComputedStyle(document.documentElement).getPropertyValue(NIVELES[J.nivel].color).trim();
+  g.fillStyle = COLOR.tinta; g.textBaseline = 'alphabetic';
+  g.font = F(900, 34); g.fillText('Tiny San Juan del Río', 80, 100);
+  g.font = F(900, 52); g.fillText(J.reto ? `Reto del día · ${fechaCorta(J.reto)}` : MODOS[J.modo], 80, 165);
+  // Nivel (pastilla de su color)
+  g.font = F(900, 26); const tn = `NIVEL ${NIVELES[J.nivel].leyenda.toUpperCase()}`, wn = g.measureText(tn).width + 40;
+  caja(1000 - wn, 70, wn, 44, 22, nivel, 4); g.fillStyle = COLOR.tinta; g.fillText(tn, 1020 - wn, 101);
+  // Mapa con las 5 rondas
+  const mx = 80, my = 200, mw = 920, mh = 460;
+  g.save(); g.beginPath(); g.roundRect(mx, my, mw, mh, 30); g.clip();
+  g.fillStyle = '#1e2a33'; g.fillRect(mx, my, mw, mh);
+  try { g.drawImage(mapaT.lienzo, mx, my, mw, mh); } catch {}
+  const P = (u, v) => { const q = mapaT.aPantalla(u, v); return { x: mx + q.x, y: my + q.y }; }, e = 1.6; // e = escala de las marcas
+  const pares = J.historial.map((h) => [P(h.pin.u, h.pin.v), P(h.lugar.u, h.lugar.v)]);
+  for (const [a, b] of pares) dibujarLinea(g, a, b, e, 1.2);
+  pares.forEach(([, b], k) => { dibujarBandera(g, b, e); dibujarNumero(g, b, k + 1, e); });
+  for (const [a] of pares) dibujarPin(g, a, e);
+  g.restore(); g.beginPath(); g.roundRect(mx, my, mw, mh, 30); g.lineWidth = 6; g.strokeStyle = COLOR.tinta; g.stroke();
+  // Total, barra y mensaje
+  const t = total();
+  g.fillStyle = COLOR.tinta; g.font = F(900, 110); g.fillText(fmt(t), 80, 790);
+  const wt = g.measureText(fmt(t)).width; g.font = F(800, 34); g.fillStyle = COLOR.texto2; g.fillText(`de ${fmt(MAX * RONDAS)} puntos`, 100 + wt, 790);
+  caja(80, 815, 920, 32, 16, '#fff', 4);
+  if (t > 0) { g.beginPath(); g.roundRect(80, 815, Math.max(32, (920 * t) / (MAX * RONDAS)), 32, 16); g.fillStyle = COLOR.r[4]; g.fill(); g.lineWidth = 4; g.strokeStyle = COLOR.tinta; g.stroke(); }
+  g.fillStyle = COLOR.tinta; g.font = F(900, 36); g.fillText(MENSAJES_FIN[rango(t / RONDAS)], 80, 900);
+  // Las 5 rondas
+  J.historial.forEach((h, k) => {
+    const y = 935 + k * 62, rg = rango(h.pts);
+    caja(80, y, 46, 46, 12, COLOR.r[rg], 4);
+    g.fillStyle = rg === 0 ? COLOR.crema : COLOR.tinta; g.font = F(900, 26); g.textAlign = 'center'; g.fillText(String(k + 1), 103, y + 33); g.textAlign = 'left';
+    g.fillStyle = COLOR.tinta; g.font = F(800, 30); g.fillText(recortarTexto(g, h.lugar.nombre, 640), 145, y + 33);
+    g.font = F(900, 32); g.textAlign = 'right'; g.fillText(fmt(h.pts), 1000, y + 34); g.textAlign = 'left';
+  });
+  g.fillStyle = COLOR.texto2; g.font = F(800, 26); g.fillText(`¿Me ganas? ${DIRECCION}`, 80, 1290);
+  return c;
+}
+/** Prepara la imagen (File JPEG, ~10 veces más ligera que PNG) para el botón Compartir */
+function prepararTarjeta() {
+  if (J.fase !== 'final') return;
+  dibujarTarjeta().toBlob((b) => { if (b) J.tarjeta = new File([b], `tiny-sjr-${J.reto ?? 'partida'}.jpg`, { type: 'image/jpeg' }); }, 'image/jpeg', 0.9);
+}
 $('adivinar').onclick = adivinar;
 $('siguiente').onclick = siguiente;
 $('salir').onclick = abrirMenu;
@@ -443,8 +519,15 @@ $('fin-otra').onclick = () => empezar(J.modo);
 $('fin-menu').onclick = abrirMenu;
 $('fin-compartir').onclick = async () => {
   const texto = textoCompartir();
-  // Teléfono: menú de compartir del sistema. Compu: se copia. Si nada de eso se puede, se muestra el texto para copiarlo a mano.
-  if (navigator.share && esTel()) { try { await navigator.share({ text: texto }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  // Teléfono: menú de compartir del sistema con la imagen y el texto (si el teléfono no acepta imagen, solo el texto).
+  // Compu: se copia el texto y aparece el enlace para descargar la imagen.
+  const conImagen = J.tarjeta && navigator.canShare?.({ files: [J.tarjeta] });
+  if (navigator.share && (esTel() || conImagen)) {
+    try { await navigator.share(conImagen ? { files: [J.tarjeta], text: texto } : { text: texto }); return; } catch (e) { if (e.name === 'AbortError') return; }
+  }
+  if (J.tarjeta) {
+    const a = $('fin-descargar'); URL.revokeObjectURL(a.href); a.href = URL.createObjectURL(J.tarjeta); a.download = J.tarjeta.name; mostrar('fin-descargar');
+  }
   try { await navigator.clipboard.writeText(texto); $('copiado').textContent = '¡Copiado! Pégalo donde quieras:\n' + texto; }
   catch { $('copiado').textContent = 'Cópialo y pégalo donde quieras:\n' + texto; }
 };
@@ -471,4 +554,4 @@ addEventListener('keydown', (e) => {
 const nivelURL = new URLSearchParams(location.search).get('nivel');
 elegirNivel(NIVELES[nivelURL] ? nivelURL : 'V0');
 abrirMenu();
-window.__juego = { J, grande, chico, datos, puntaje, catalogo, textoCompartir, lugaresDelReto, hoy };
+window.__juego = { J, grande, chico, datos, puntaje, catalogo, textoCompartir, lugaresDelReto, hoy, dibujarTarjeta };

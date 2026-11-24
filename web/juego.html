@@ -119,6 +119,7 @@
     @media (max-width: 600px) { .modo-b svg { display: none; } .modo-b { padding: 10px 14px; } .modo-b b { font-size: 18px; margin: 0 0 2px; } .modo-b span { font-size: 13px; } }
     #reto-dia b { margin: 0; }
     #reto-dia .chip { background: var(--nivel); color: var(--tinta); font-size: 12px; }
+    #fin-descargar { display: block; margin-top: 8px; font-weight: 800; font-size: 14px; color: var(--tinta); }
     #fin-manana { flex: 1; align-self: center; font-weight: 800; font-size: 14px; color: var(--texto2); }
     .teclas { margin-top: 16px; font-size: 12px; color: var(--texto2); }
     .nota-maqueta { margin-top: 8px; font-size: 12px; color: var(--texto2); }
@@ -305,6 +306,7 @@
       <button class="btn" id="fin-compartir"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3M6 6.5 10 2.5l4 4M4 10v6.5h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Compartir</button>
       <button class="btn" id="fin-menu" aria-label="Menú" title="Menú (Esc)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5h12M4 10h12M4 15h12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span>Menú</span></button>
     </div>
+    <a id="fin-descargar" class="oculto">Descargar la imagen para compartir</a>
     <div id="copiado" aria-live="polite"></div>
   </div>
 
